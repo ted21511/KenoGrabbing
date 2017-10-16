@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.ct.lk.domain.Draw" table="draw" dynamic-update="true">
+		<!-- <cache usage="read-write"/>  -->
+	
+		<id name="id" column="draw_id">
+			<generator class="identity" />
+		</id>		
+		<property name="date" column="draw_date" type="java.sql.Date"/>
+		<property name="number" column="draw_number"/>
+		<property name="sequence" column="draw_sequence"/>
+		<property name="gameCode" column="game_code"/>
+		<property name="market" column="market"/>
+		<property name="beginTime" column="begin_time" type="java.util.Date"/>
+		<property name="endTime" column="end_time" type="java.util.Date"/>
+		<property name="officialEndTime" column="official_end_time" type="java.util.Date"/>
+		<property name="closeTime" column="close_time" type="java.util.Date"/>
+		<property name="status" column="status"/>
+		<property name="result" column="result"/>
+		<property name="totalTicket" column="total_ticket" />
+		<property name="resultTime" column="result_time" type="java.util.Date"/>
+		
+		<property name="officialResult" column="official_result"/>
+		<property name="officialResultTime" column="official_result_time"/>
+	</class>
+	
+</hibernate-mapping>

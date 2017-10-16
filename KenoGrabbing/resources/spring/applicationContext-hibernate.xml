@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
+	default-autowire="byName" default-lazy-init="false">
+
+	<!-- Hibernate配置,数据库连接,Dao等 -->
+
+	<!-- 数据源定义,使用Apache DBCP 连接池 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${kn.jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialSize" value="${dataSource.initialSize}" />
+		<property name="maxActive" value="${dataSource.maxActive}" />
+		<property name="maxIdle" value="${dataSource.maxIdle}" />
+		<property name="minIdle" value="${dataSource.minIdle}" />
+		<property name="maxWait" value="${dataSource.maxWait}" />
+		<property name="testWhileIdle" value="true" />
+		<property name="validationQuery" value="select 1 " />
+	</bean>
+
+	<!--Hibernate SessionFatory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<bean
+				class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+				<property name="locations">
+					<list>
+						<value>classpath:hibernate.properties</value>
+						<value>classpath:memcached.properties</value>
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="mappingLocations" value="classpath:hibernate/*.hbm.xml" />
+	</bean>
+	
+	<bean id="smtpEmailProperties" class="com.kn.util.SmtpInfo" >
+		<property name="smtpName" value="${mail.smtp.ssl.trust}"/>
+		<property name="smtpPort" value="${mail.smtp.port}"/>
+		<property name="broadcastAccount" value="${mail.smtp.user}"/>
+		<property name="broadcastPassword" value="${mail.smtp.password}"/>
+		<property name="emailReceivers" value="${mail.receivers}"/>
+		<property name="emailFailSubject" value="${mail.connected.fail.subject}"/>
+		<property name="emailFailText" value="${mail.connected.fail.text}"/>
+		<property name="emailSuccessfulSubject" value="${mail.reconnected.successful.subject}"/>
+		<property name="emailSuccessfulText" value="${mail.reconnected.successful.text}"/>
+	</bean>
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<constructor-arg ref="sessionFactory" />
+	</bean>
+
+	<bean id="genericHibernateDao" class="org.framework.support.hibernate.GenericHibernateDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="KenoGrabbingTask" class="com.kn.grabbing.KenoGrabbingTask" init-method="startGrabbing">
+		<property name="smtpEmailProperties" ref="smtpEmailProperties" />
+		<property name="socketHttpDestination" value="${kn.socketServer.http.destination}" />		
+	</bean>
+	
+	<!-- TransactionManager -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="defaultTimeout" value="30" />  <!-- timeout 30 seconds -->
+	</bean>
+
+	
+</beans>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName" default-lazy-init="false">
+
+	<!-- 共用的配置 -->
+	
+	<!-- 属性文件读入 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+				<value>classpath:memcached.properties</value>
+				<value>classpath:socket.properties</value>
+				<value>classpath:emailNotified.properties</value>
+				<value>classpath:marketUrl.properties</value>				
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="com.ct.lk.tool.SysParamManagerImpl" id="sysParamManager"/>
+	
+	
+<!-- 	<bean id="smtpSource" class="com.ct.keno.gs.socket.SmtpInfo"> -->
+<!--    		<property name="smtpName" value="${mail.smtp.ssl.trust}"/> -->
+		
+<!-- 	</bean> -->
+	
+	<!-- 支持 @AspectJ 标记-->
+	<aop:aspectj-autoproxy />
+
+	<!-- 支持 @Transactional 标记 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<context:annotation-config />
+	
+	
+</beans>

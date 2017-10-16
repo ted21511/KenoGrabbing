@@ -1,0 +1,54 @@
+<project name="project.award.result" default="build" basedir=".">
+
+	<tstamp>
+		<format property="today" pattern="yyyyMMdd" />
+	</tstamp>
+
+	<path id="build.class.path">
+		<fileset dir="${basedir}/resources">
+			<include name="hibernate/*.xml" />
+		</fileset>
+		<fileset dir="${basedir}/resources">
+			<include name="spring/*.xml" />
+		</fileset>
+		<fileset dir="${basedir}/required-lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${basedir}/build" />
+		<delete dir="${basedir}/dist" />
+
+
+	</target>
+
+	<target name="compile" depends="clean">
+		<mkdir dir="${basedir}/build/classes" />
+		<javac srcdir="${basedir}/src" destdir="${basedir}/build/classes" encoding="UTF-8" source="1.6" target="1.6" debug="true" includeantruntime="true" includejavaruntime="true">
+			<classpath refid="build.class.path" />
+			<exclude name="test/unit/Test.java" />
+		</javac>
+		<mkdir dir="${basedir}/build/classes/spring" />
+		<mkdir dir="${basedir}/build/classes/hibernate" />
+
+		<copy todir="${basedir}/build/classes/spring">
+			<fileset file="${basedir}/resources/spring/*.xml" />
+		</copy>
+		<copy todir="${basedir}/build/classes/hibernate">
+			<fileset file="${basedir}/resources/hibernate/*.xml" />
+		</copy>
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${basedir}/dist" />
+		<jar destfile="${basedir}/dist/kn-grabbing.jar" basedir="${basedir}/build/classes" />
+	</target>
+
+	<target name="build" depends="jar" description="build tar.gz">
+		<tar destfile="${basedir}/dist/kn-grabbing_${today}.tar.gz" basedir="${basedir}/dist" compression="gzip">
+		</tar>
+	</target>
+
+
+</project>
