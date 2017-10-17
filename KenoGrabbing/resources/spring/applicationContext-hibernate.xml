@@ -60,9 +60,18 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="DrawDAO" class="com.kn.dao.DrawDAO" >
+		<property name="genericHibernateDao" ref="genericHibernateDao" />		
+	</bean>
+	
 	<bean id="KenoGrabbingTask" class="com.kn.grabbing.KenoGrabbingTask" init-method="startGrabbing">
 		<property name="smtpEmailProperties" ref="smtpEmailProperties" />
-		<property name="socketHttpDestination" value="${kn.socketServer.http.destination}" />		
+		<property name="socketHttpDestination" value="${kn.socketServer.http.destination}" />
+		<property name="drawDAO" ref="DrawDAO" />		
+	</bean>
+	
+	<bean id="KenoGrabbingCA" class="com.kn.grabbing.KenoGrabbingCA" >
+		<property name="url" value="${ca.url}" />		
 	</bean>
 	
 	<!-- TransactionManager -->

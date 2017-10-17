@@ -3,20 +3,23 @@ package com.kn.grabbing;
 import java.util.HashMap;
 
 import org.framework.support.spring.SpringObjectFactory;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.kn.dao.DrawDAO;
 import com.kn.util.EmailNotificated;
 import com.kn.util.SmtpInfo;
+
 
 public class KenoGrabbingTask {
 
 	public static SmtpInfo smtpEmailProperties;
 	public static String socketHttpDestination;
-	
+	public static DrawDAO drawDAO;
 	public static String proxyHost = "proxy.hinet.net";
 	
 	public static void main(String[] args) {
@@ -41,7 +44,9 @@ public class KenoGrabbingTask {
 	}
 
 	public void startGrabbing() {
+		
 		System.out.println("********** Start Keno Grabbing... **********");
+		
 	}
 	
 	protected void updateData(String socketHttpDestination, HashMap<String, String> httpRequestInfo, Logger logger) {
@@ -104,6 +109,9 @@ public class KenoGrabbingTask {
 		this.socketHttpDestination = socketHttpDestination;
 	}
 	
-	
+	@SuppressWarnings("static-access")
+	public void setDrawDAO(DrawDAO drawDAO) {
+		this.drawDAO = drawDAO;
+	}
 
 }

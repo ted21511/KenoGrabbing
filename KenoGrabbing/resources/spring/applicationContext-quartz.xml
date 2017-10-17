@@ -4,13 +4,23 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
 	default-autowire="no" default-lazy-init="false">
 
+	<bean id="runKenoGrabbingCA"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="KenoGrabbingCA" />
+		<property name="targetMethod" value="startGrabbing" />
+		<property name="concurrent" value="false" />
+	</bean>
 
+	<bean id="cronTriggerCA" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="runKenoGrabbingCA" />
+		<property name="cronExpression" value="0/30 * * * * ?" />
+	</bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
 		depends-on="sysParamManager">
 		<property name="triggers">
 			<list>
-				
+				<ref bean="cronTriggerCA" />
 			</list>
 		</property>
 		<property name="quartzProperties">
