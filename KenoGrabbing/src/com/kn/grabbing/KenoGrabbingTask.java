@@ -9,13 +9,14 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.kn.dao.DrawDAO;
 import com.kn.util.EmailNotificated;
 import com.kn.util.SmtpInfo;
-
 public class KenoGrabbingTask {
 
 	public static SmtpInfo smtpEmailProperties;
 	public static String socketHttpDestination;
+	public static DrawDAO drawDAO;
 	
 	public static String proxyHost = "proxy.hinet.net";
 	
@@ -102,6 +103,11 @@ public class KenoGrabbingTask {
 	@SuppressWarnings("static-access")
 	public void setSocketHttpDestination(String socketHttpDestination) {
 		this.socketHttpDestination = socketHttpDestination;
+	}
+
+	@SuppressWarnings("static-access")
+	public void setDrawDAO(DrawDAO drawDAO) {
+		this.drawDAO = drawDAO;
 	}
 	
 	
