@@ -70,10 +70,14 @@
 		<property name="drawDAO" ref="DrawDAO" />	
 	</bean>
 	
-	<bean id="LottoGrabbingWCA" class="com.kn.grabbing.KenoGrabbingWCA" >
+	<bean id="KenoGrabbingWCA" class="com.kn.grabbing.KenoGrabbingWCA" >
 		<property name="url" value="${wca.url}" />
 		<property name="issuePeriod" value="${issue.period}" />
-		
+	</bean>
+
+	
+	<bean id="KenoGrabbingCA" class="com.kn.grabbing.KenoGrabbingCA" >
+		<property name="url" value="${ca.url}" />	
 	</bean>
 	
 	<!-- TransactionManager -->
