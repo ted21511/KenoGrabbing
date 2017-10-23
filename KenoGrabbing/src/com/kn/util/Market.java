@@ -5,9 +5,9 @@ import com.kn.util.Market;
 public enum Market {
 	
 	// KN
-//	SK("SK", "KN"),
-//	MT("MT", "KN"),
-//	BJ("BJ", "KN"),
+	SK("SK", "KN"),
+	MT("MT", "KN"),
+	BJ("BJ", "KN"),
 	AU("AU", "KN"),
 	CA("CA", "KN"),
 	WCA("WCA", "KN");

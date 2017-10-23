@@ -21,6 +21,12 @@
 		<property name="targetMethod" value="startGrabbing" />
 		<property name="concurrent" value="false" />
 	</bean>
+	
+	<bean id="runKenoGrabbingSK" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="KenoGrabbingSK" />
+		<property name="targetMethod" value="startGrabbing" />
+		<property name="concurrent" value="false" />
+	</bean>
 
  	<bean id="runKenoGrabbingCheck"
  		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -36,6 +42,11 @@
 
 	<bean id="cronTriggerCA" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="runKenoGrabbingCA" />
+		<property name="cronExpression" value="0/30 * * * * ?" />
+	</bean>
+	
+	<bean id="cronTriggerSK" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="runKenoGrabbingSK" />
 		<property name="cronExpression" value="0/30 * * * * ?" />
 	</bean>
 
@@ -57,6 +68,7 @@
 				<ref bean="cronTriggerWCA" />
 				<ref bean="cronTriggerCA" />
 				<ref bean="cronTriggerAU" />
+				<ref bean="cronTriggerSK" />
 				<ref bean="cronTriggerCheck" />
 			</list>
 		</property>

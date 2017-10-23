@@ -1,5 +1,6 @@
 package com.kn.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.framework.support.hibernate.GenericHibernateDao;
@@ -21,10 +22,25 @@ public class DrawDAO {
 		return drawlist;
 	}
 	
+	public List<Draw> getDrawDateTime(String gameCode ,String market,String nowdate) {
+		String sql = "SELECT * from draw where game_code='"+ gameCode +"' and market='" + market
+				+ "' and end_time = convert(datetime,'" + nowdate + "') and result is NULL";
+		List<Draw> drawlist = genericHibernateDao.findBySql(Draw.class, sql);
+		return drawlist;
+	}
+	
 	public List<Draw> getDrawNumList(String gameCode, String market, String startNumber, String endNumber) {
 		String sql = "SELECT * from draw where game_code='" + gameCode + "' and market='" + market
 				+ "' and result is NULL and draw_number between '" + startNumber + "' and '" + endNumber
 				+ "' and draw_number != '" + endNumber + "' order by draw_number DESC";
+		List<Draw> drawlist = genericHibernateDao.findBySql(Draw.class, sql);
+		return drawlist;
+	}
+	
+	public List<Draw> getDrawDateList(String gameCode, String market, String startdate, String enddate) {
+		String sql = "SELECT * from draw where game_code='" + gameCode + "' and market='" + market
+				+ "' and result is NULL and end_time  between convert(datetime,'" + startdate + "') and "
+				+ "convert(datetime,'" + enddate + "') and end_time  != convert(datetime,'" + enddate + "') order by draw_number DESC";
 		List<Draw> drawlist = genericHibernateDao.findBySql(Draw.class, sql);
 		return drawlist;
 	}

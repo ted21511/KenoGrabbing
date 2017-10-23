@@ -82,9 +82,12 @@
 	<bean id="KenoGrabbingAU" class="com.kn.grabbing.KenoGrabbingAU" >
 		<property name="url" value="${au.url}" />	
 	</bean>
+		
+	<bean id="KenoGrabbingSK" class="com.kn.grabbing.KenoGrabbingSK" >
+		<property name="url" value="${sk.url}" />	
+	</bean>
 	
 	<bean id="KenoGrabbingCheck" class="com.kn.grabbing.KenoGrabbingCheck" >
-		
 	</bean>
 	
 	<!-- TransactionManager -->

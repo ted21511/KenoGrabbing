@@ -79,16 +79,9 @@ public class KenoGrabbingTask {
 	}
 	
 	public void changeIP() {
-
-	//   String url = "http://www.whatismyip.com.tw/";
-	//   Document doc = HtmlUnit.start(url);
-	//   System.out.println(doc);
 	   System.getProperties().setProperty("proxySet", "true");
 	   System.getProperties().setProperty("http.proxyHost", proxyHost);
 	   System.getProperties().setProperty("http.proxyPort", "80");
-	//   System.out.println("------------------------");
-	//   Document doc1 = start(url);
-	//   System.out.println(doc1);
 	   startGrabbing();
 	 }
 
