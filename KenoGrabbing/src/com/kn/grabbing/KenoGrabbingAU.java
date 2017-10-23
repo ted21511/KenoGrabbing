@@ -15,7 +15,6 @@ import com.ct.lk.domain.Draw;
 import com.kn.util.GameCode;
 import com.kn.util.Market;
 
-import org.framework.web.ssl.DisableSslVerification;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,7 +38,6 @@ public class KenoGrabbingAU extends KenoGrabbingTask {
 			String startDrawNumber = draw.getNumber();
 			String drawDate = new SimpleDateFormat("yyyy-MM-dd").format(draw.getDate());
 			
-			DisableSslVerification.disable();			
 	        Connection.Response response = Jsoup.connect(url.replace("drawNumber", startDrawNumber).replaceAll("drawDate", drawDate)).userAgent("Mozilla/5.0 (Windows NT 6.2; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0")
 	                .method(Connection.Method.GET).ignoreContentType(true)
 	                .execute();
