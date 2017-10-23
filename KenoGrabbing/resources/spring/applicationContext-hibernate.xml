@@ -80,6 +80,10 @@
 		<property name="url" value="${ca.url}" />	
 	</bean>
 	
+	<bean id="KenoGrabbingSK" class="com.kn.grabbing.KenoGrabbingSK" >
+		<property name="url" value="${sk.url}" />	
+	</bean>
+	
 	<!-- TransactionManager -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">

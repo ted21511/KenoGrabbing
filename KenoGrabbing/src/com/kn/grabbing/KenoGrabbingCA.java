@@ -20,11 +20,11 @@ public class KenoGrabbingCA extends KenoGrabbingTask{
 	
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingCA.class);
 	private String url;
-	
+	int error = 1;
 	
 	
 //	public static void main(String[] args) {
-//	LottoGrabbingXJ task = new LottoGrabbingXJ();
+//	KenoGrabbingCA task = new KenoGrabbingCA();
 //	task.startGrabbing();
 //}
 
@@ -77,9 +77,18 @@ public class KenoGrabbingCA extends KenoGrabbingTask{
 			}
 			
 			System.out.println("----------Keno CA end----------");
+			error = 1;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			if (error <= 3) {
+				System.out.println("CA錯誤次數:" + error);
+				error++;
+				changeIP();
+			} else {
+				logger.error("Error in drawing " + Market.CA.name() + " data. Error message: " + e.getMessage());
+				//sendNotifyMail("Error in drawing " + Market.CQ.name() + " data", "Error message: " + e.getMessage());
+				error = 1;
+			}
 		}
 	}
 	
