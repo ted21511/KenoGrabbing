@@ -14,11 +14,6 @@
 	<classpathentry kind="lib" path="required-lib/commons-pool-1.6.jar"/>
 	<classpathentry kind="lib" path="required-lib/cssparser-0.9.11.jar"/>
 	<classpathentry kind="lib" path="required-lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="required-lib/framework-command-3.0.0.jar"/>
-	<classpathentry kind="lib" path="required-lib/framework-command-tcp-1.0.0.jar"/>
-	<classpathentry kind="lib" path="required-lib/framework-core-2.0.0.jar"/>
-	<classpathentry kind="lib" path="required-lib/framework-json-1.0.0.jar"/>
-	<classpathentry kind="lib" path="required-lib/framework-support-3.0.0.jar"/>
 	<classpathentry kind="lib" path="required-lib/guava-12.0.jar"/>
 	<classpathentry kind="lib" path="required-lib/hibernate3.5.2.jar"/>
 	<classpathentry kind="lib" path="required-lib/htmlunit-2.13.jar"/>
@@ -56,5 +51,14 @@
 	<classpathentry kind="lib" path="required-lib/xalan-2.7.1.jar"/>
 	<classpathentry kind="lib" path="required-lib/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="required-lib/xml-apis-1.4.01.jar"/>
+	<classpathentry kind="lib" path="C:/KenoGrabbing/KenoGrabbing/required-lib/bcprov-ext-jdk15on-158.jar"/>
+	<classpathentry kind="lib" path="C:/KenoGrabbing/KenoGrabbing/required-lib/bcprov-jdk15on-158.jar"/>
+	<classpathentry kind="lib" path="C:/KenoGrabbing/KenoGrabbing/required-lib/bctls-jdk15on-158.jar"/>
+	<classpathentry kind="lib" path="C:/KenoGrabbing/KenoGrabbing/required-lib/framework-command-3.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/KenoGrabbing/KenoGrabbing/required-lib/framework-command-tcp-1.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/KenoGrabbing/KenoGrabbing/required-lib/framework-core-2.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/KenoGrabbing/KenoGrabbing/required-lib/framework-json-1.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/KenoGrabbing/KenoGrabbing/required-lib/framework-support-3.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/KenoGrabbing/KenoGrabbing/required-lib/framework-web-2.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

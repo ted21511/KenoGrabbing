@@ -3,6 +3,7 @@ package com.kn.grabbing;
 import java.util.HashMap;
 import java.util.List;
 
+import org.framework.web.ssl.DisableSslVerification;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,6 +32,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask{
 	public void startGrabbing() {
 		
 		try {
+			DisableSslVerification.disable();	
 			System.out.println("----------Keno CA start----------");
 			Document xmlDoc = Jsoup.connect(url).ignoreContentType(true).timeout(10000).get();
 			HashMap<String,JSONObject> newlist = KenoCAUtils.getNumber(xmlDoc);

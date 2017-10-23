@@ -40,7 +40,7 @@
 		<property name="mappingLocations" value="classpath:hibernate/*.hbm.xml" />
 	</bean>
 	
-	<bean id="smtpEmailProperties" class="com.kn.util.SmtpInfo" >
+	<bean id="smtpEmailPropertiesKeno" class="com.kn.util.SmtpInfo" >
 		<property name="smtpName" value="${mail.smtp.ssl.trust}"/>
 		<property name="smtpPort" value="${mail.smtp.port}"/>
 		<property name="broadcastAccount" value="${mail.smtp.user}"/>
@@ -60,24 +60,31 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="DrawDAO" class="com.kn.dao.DrawDAO" >
+	<bean id="DrawDAOKeno" class="com.kn.dao.DrawDAO" >
 		<property name="genericHibernateDao" ref="genericHibernateDao" />		
 	</bean>
 	
 	<bean id="KenoGrabbingTask" class="com.kn.grabbing.KenoGrabbingTask" init-method="startGrabbing">
-		<property name="smtpEmailProperties" ref="smtpEmailProperties" />
+		<property name="smtpEmailProperties" ref="smtpEmailPropertiesKeno" />
 		<property name="socketHttpDestination" value="${kn.socketServer.http.destination}" />	
-		<property name="drawDAO" ref="DrawDAO" />	
+		<property name="drawDAO" ref="DrawDAOKeno" />	
 	</bean>
 	
 	<bean id="KenoGrabbingWCA" class="com.kn.grabbing.KenoGrabbingWCA" >
 		<property name="url" value="${wca.url}" />
 		<property name="issuePeriod" value="${issue.period}" />
 	</bean>
-
 	
 	<bean id="KenoGrabbingCA" class="com.kn.grabbing.KenoGrabbingCA" >
 		<property name="url" value="${ca.url}" />	
+	</bean>
+	
+	<bean id="KenoGrabbingAU" class="com.kn.grabbing.KenoGrabbingAU" >
+		<property name="url" value="${au.url}" />	
+	</bean>
+	
+	<bean id="KenoGrabbingCheck" class="com.kn.grabbing.KenoGrabbingCheck" >
+		
 	</bean>
 	
 	<!-- TransactionManager -->

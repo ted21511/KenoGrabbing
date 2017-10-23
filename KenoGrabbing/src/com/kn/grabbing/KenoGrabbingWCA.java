@@ -20,7 +20,7 @@ public class KenoGrabbingWCA extends KenoGrabbingTask {
 	
 	private int issuePeriod = 10;
 	private int dataSize;
-	private String url;// = "http://www.wclc.com/winning-numbers/keno.htm";
+	private String url;// = "http://www.wclc.com/winning-numbers/keno.htm?selDate=";
 	private int error = 1;
 
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingWCA.class);
@@ -38,9 +38,8 @@ public class KenoGrabbingWCA extends KenoGrabbingTask {
 			int day = drawDate.getDate();
 			int month = drawDate.getMonth()+1;
 			int year = drawDate.getYear()+1900;			
-			url = url + month + "/" + day + "/" + year;
 			
-			Document doc= Jsoup.parse(new URL(url), 10000);
+			Document doc= Jsoup.parse(new URL(url + month + "/" + day + "/" + year), 10000);
 			Element table = doc.getElementsByAttributeValue("class", "kenoTable").first();
 			List<Element> trs = table.select("tr");
 			trs = Lists.reverse(trs);
@@ -64,7 +63,7 @@ public class KenoGrabbingWCA extends KenoGrabbingTask {
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (error <= 3) {
-				System.out.println("WCA錯誤次數:" + error);
+				System.out.println("Keno WCA 錯誤次數:" + error);
 				error++;
 				changeIP();
 			} else {

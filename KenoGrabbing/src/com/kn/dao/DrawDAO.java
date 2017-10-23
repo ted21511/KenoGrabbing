@@ -46,10 +46,46 @@ public class DrawDAO {
 		return genericHibernateDao.findBySql(Draw.class, checkSql.toString());
 	}
 	
+	public List<Draw> selectByDrawNumberAndMarket(String market, String drawNumber, String gameCode, String drawDate) {
+		StringBuffer checkSql = new StringBuffer();
+		checkSql.append("Select * from draw ");
+		checkSql.append("where draw_number = '" + drawNumber + "' ");
+		checkSql.append("and game_code = '" + gameCode + "' ");
+		checkSql.append("and market = '" + market + "' ");
+		checkSql.append("and draw_date = '" + drawDate + "' ");
+		
+		return genericHibernateDao.findBySql(Draw.class, checkSql.toString());
+	}
+	
 	public List<Draw> selectMAXDrawDate(String market, String gameCode) {
 		StringBuffer checkSql = new StringBuffer();
 		checkSql.append("Select top 1 * from draw ");
 		checkSql.append("where game_code = '" + gameCode + "' ");
+		checkSql.append("and market = '" + market + "' ");
+		checkSql.append("order by draw_id desc ");
+		
+		return genericHibernateDao.findBySql(Draw.class, checkSql.toString());
+	}
+    
+    public List<Draw> getCountOfStatusL(String market, String gameCode, String date) {
+    	StringBuffer checkSql = new StringBuffer();
+    	checkSql.append("Select * from draw ");
+		checkSql.append("where draw_date = '" + date + "' ");
+		checkSql.append("and begin_time < CURRENT_TIMESTAMP ");
+		checkSql.append("and game_code = '" + gameCode + "' ");
+		checkSql.append("and market = '" + market + "' ");
+		checkSql.append("and status = 'L' ");
+		checkSql.append("and result is NULL ");
+		
+		return genericHibernateDao.findBySql(Draw.class, checkSql.toString());
+	}
+    
+    public List<Draw> getDrawNumberNow(String market, String gameCode) {
+    	StringBuffer checkSql = new StringBuffer();
+    	checkSql.append("select top 20 * from draw  ");
+		checkSql.append("where ");
+		checkSql.append("begin_time < CURRENT_TIMESTAMP ");
+		checkSql.append("and game_code = '" + gameCode + "' ");
 		checkSql.append("and market = '" + market + "' ");
 		checkSql.append("order by draw_id desc ");
 		
