@@ -45,8 +45,11 @@ public class KenoSKUtils {
 		String a[] = newNumber.split(":");
 		int hour = Integer.parseInt(a[0]);
 		int mi = Integer.parseInt(a[1]);
-
+		
 		Calendar nowdate = Calendar.getInstance();
+		if (hour + 6 >= 24){
+			nowdate.add(Calendar.DAY_OF_MONTH, -1);
+		}
 		nowdate.set(Calendar.HOUR_OF_DAY, hour + 6);
 		nowdate.set(Calendar.MINUTE, mi);
 		nowdate.set(Calendar.SECOND, 0);
@@ -57,9 +60,15 @@ public class KenoSKUtils {
 		return dateTime;
 	}
 
-	public static String formatStartDate() {
-
+	public static String formatStartDate(String newNumber) {
+		
+		String a[] = newNumber.split(":");
+		int hour = Integer.parseInt(a[0]);
+		
 		Calendar startdate = Calendar.getInstance();
+		if (hour >= 18){
+			startdate.add(Calendar.DAY_OF_MONTH, -1);
+		}
 		startdate.set(Calendar.HOUR_OF_DAY, 11);
 		startdate.set(Calendar.MINUTE, 0);
 		startdate.set(Calendar.SECOND, 0);

@@ -26,7 +26,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask{
 //	public static void main(String[] args) {
 //	KenoGrabbingCA task = new KenoGrabbingCA();
 //	task.startGrabbing();
-//}
+//    }
 
 	public void startGrabbing() {
 		

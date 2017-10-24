@@ -21,18 +21,18 @@ import com.kn.util.Market;
 public class KenoGrabbingSK extends KenoGrabbingTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingCA.class);
-	private static boolean flag = true;
 	private String url; // = "https://eklubkeno.etipos.sk/Archive.aspx";
 	int error = 1;
-	// public static void main(String[] args) {
-	// KenoGrabbingSK task = new KenoGrabbingSK();
-	// task.startGrabbing();
-	// }
+	
+//	 public static void main(String[] args) {
+//	 KenoGrabbingSK task = new KenoGrabbingSK();
+//	 task.startGrabbing();
+//	 }
 
 	public void startGrabbing() {
 
 		try {
-			System.out.println("----------Keno SK start----------");
+			System.out.println("----------Keno SK start----------");		
 			Document xmlDoc = Jsoup.connect(url).timeout(10000).post();
 			String resultTime = KenoSKUtils.getNowDateTime();
 			Element newlist = KenoSKUtils.getNumber(xmlDoc);
@@ -40,7 +40,7 @@ public class KenoGrabbingSK extends KenoGrabbingTask {
 
 				String newNumber = newlist.select("#_ctl0_ContentPlaceHolder_repResult__ctl1_lblDrawTimeValue").text();
 				String newDate = KenoSKUtils.formatNowDate(newNumber);
-				String startDate = KenoSKUtils.formatStartDate();
+				String startDate = KenoSKUtils.formatStartDate(newNumber);
 				List<Draw> list = drawDAO.getDrawDateTime(GameCode.KN.name(), Market.SK.name(), newDate);
 				List<Draw> drawlist = drawDAO.getDrawDateList(GameCode.KN.name(), Market.SK.name(), startDate, newDate);
 				HashMap<String, String> awardMap = null;
