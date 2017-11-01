@@ -13,7 +13,7 @@
 	<!-- 按日期的循环文件存放地 -->
 	<appender name="_ROLLFILE" class="org.apache.log4j.DailyRollingFileAppender">
 		<errorHandler class="org.apache.log4j.helpers.OnlyOnceErrorHandler" />
-		<param name="File" value="/home/applications_logs/kn-grabbing-result.log" />
+		<param name="File" value="/home/applications_logs/keno-grabbing-result.log" />
 		<param name="DatePattern" value="'.'yyyyMMdd'.log'"/>
 		<param name="Append" value="true"/>
 		<param name="Encoding" value="GBK"/>

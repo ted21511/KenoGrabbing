@@ -1,6 +1,5 @@
 package com.kn.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import org.framework.support.hibernate.GenericHibernateDao;
