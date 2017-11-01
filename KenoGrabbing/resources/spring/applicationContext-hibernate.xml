@@ -90,6 +90,9 @@
 	<bean id="KenoGrabbingBJ" class="com.kn.grabbing.KenoGrabbingBJ" >
 		<property name="url" value="${bj.url}" />
 	</bean>
+		
+	<bean id="KenoGrabbingMT" class="com.kn.grabbing.KenoGrabbingMT" >
+	</bean>
 	
 	<bean id="KenoGrabbingCheck" class="com.kn.grabbing.KenoGrabbingCheck" >
 	</bean>
