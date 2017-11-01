@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import com.ct.lk.domain.Draw;
 
 import com.kn.util.GameCode;
@@ -20,7 +21,7 @@ import com.kn.util.Market;
 
 public class KenoGrabbingSK extends KenoGrabbingTask {
 
-	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingCA.class);
+	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingSK.class);
 	private String url; // = "https://eklubkeno.etipos.sk/Archive.aspx";
 	int error = 1;
 	
@@ -29,10 +30,11 @@ public class KenoGrabbingSK extends KenoGrabbingTask {
 //	 task.startGrabbing();
 //	 }
 
+	
 	public void startGrabbing() {
 
 		try {
-			System.out.println("----------Keno SK start----------");		
+			System.out.println("----------Keno SK start----------");					 			 
 			Document xmlDoc = Jsoup.connect(url).timeout(10000).post();
 			String resultTime = KenoSKUtils.getNowDateTime();
 			Element newlist = KenoSKUtils.getNumber(xmlDoc);
@@ -99,8 +101,6 @@ public class KenoGrabbingSK extends KenoGrabbingTask {
 				changeIP();
 			} else {
 				logger.error("Error in drawing " + Market.SK.name() + " data. Error message: " + e.getMessage());
-				// sendNotifyMail("Error in drawing " + Market.CQ.name() + "
-				// data", "Error message: " + e.getMessage());
 				error = 1;
 			}
 		}

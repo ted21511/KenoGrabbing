@@ -45,12 +45,18 @@ public class DrawDAO {
 		return drawlist;
 	}
 
+	public List<Draw> getStartNumber(String gameCode, String market) {
+		String sql = "SELECT TOP (1) * from draw where game_code='" + gameCode + "' and market='" + market
+				+ "'and draw_date= CONVERT(char(10), getdate(), 20)";
+		List<Draw> drawlist = genericHibernateDao.findBySql(Draw.class, sql);
+		return drawlist;
+	}
+
 	public void updateDrawResult(String gameCode, String market, String drawNumber, String result) {
 		String sql = "UPDATE draw SET result = '" + result + "' where draw_number ='" + drawNumber + "' and "
 				+ "game_code='" + gameCode + "' and market='" + market + "'";
 		genericHibernateDao.executeSql(sql);
 	}
-
 	
 	public List<Draw> selectByDrawNumberAndMarket(String market, String drawNumber, String gameCode) {
 		StringBuffer checkSql = new StringBuffer();

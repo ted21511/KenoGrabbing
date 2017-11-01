@@ -86,7 +86,6 @@ public class KenoGrabbingCA extends KenoGrabbingTask{
 				changeIP();
 			} else {
 				logger.error("Error in drawing " + Market.CA.name() + " data. Error message: " + e.getMessage());
-				//sendNotifyMail("Error in drawing " + Market.CQ.name() + " data", "Error message: " + e.getMessage());
 				error = 1;
 			}
 		}

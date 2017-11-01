@@ -4,37 +4,49 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
 	default-autowire="no" default-lazy-init="false">
 
-	<bean id="runKenoGrabbingWCA" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+
+	<bean id="runKenoGrabbingWCA"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="KenoGrabbingWCA" />
 		<property name="targetMethod" value="startGrabbing" />
-		<property name="concurrent" value="false" />
+		<!-- <property name="concurrent" value="false" /> -->
 	</bean>
 
-	<bean id="runKenoGrabbingCA" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<bean id="runKenoGrabbingCA"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="KenoGrabbingCA" />
 		<property name="targetMethod" value="startGrabbing" />
-		<property name="concurrent" value="false" />
+		<!-- <property name="concurrent" value="false" /> -->
 	</bean>
 
-	<bean id="runKenoGrabbingAU" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<bean id="runKenoGrabbingAU"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="KenoGrabbingAU" />
 		<property name="targetMethod" value="startGrabbing" />
-		<property name="concurrent" value="false" />
-	</bean>
-	
-	<bean id="runKenoGrabbingSK" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="KenoGrabbingSK" />
-		<property name="targetMethod" value="startGrabbing" />
-		<property name="concurrent" value="false" />
+		<!-- <property name="concurrent" value="false" /> -->
 	</bean>
 
- 	<bean id="runKenoGrabbingCheck"
- 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
- 		<property name="targetObject" ref="KenoGrabbingCheck" />
- 		<property name="targetMethod" value="startChecking" />  	
- 		<property name="concurrent" value="false" />
- 	</bean> 
-	
+	<bean id="runKenoGrabbingSK"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="KenoGrabbingSK" />
+		<property name="targetMethod" value="startGrabbing" />
+		<!-- <property name="concurrent" value="false" /> -->
+	</bean>
+
+	<bean id="runKenoGrabbingBJ"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="KenoGrabbingBJ" />
+		<property name="targetMethod" value="startGrabbing" />
+		<!-- <property name="concurrent" value="false" /> -->
+	</bean>
+
+	<bean id="runKenoGrabbingCheck"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="KenoGrabbingCheck" />
+		<property name="targetMethod" value="startChecking" />
+		<!-- <property name="concurrent" value="false" /> -->
+	</bean>
+
 	<bean id="cronTriggerWCA" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="runKenoGrabbingWCA" />
 		<property name="cronExpression" value="0 0/1 * * * ?" />
@@ -44,9 +56,14 @@
 		<property name="jobDetail" ref="runKenoGrabbingCA" />
 		<property name="cronExpression" value="0/30 * * * * ?" />
 	</bean>
-	
+
 	<bean id="cronTriggerSK" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="runKenoGrabbingSK" />
+		<property name="cronExpression" value="0/30 * * * * ?" />
+	</bean>
+
+    <bean id="cronTriggerBJ" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="runKenoGrabbingBJ" />
 		<property name="cronExpression" value="0/30 * * * * ?" />
 	</bean>
 
@@ -55,21 +72,23 @@
 		<property name="cronExpression" value="0/30 * * * * ?" />
 	</bean>
 
- 	<bean id="cronTriggerCheck" class="org.springframework.scheduling.quartz.CronTriggerBean">
- 		<property name="jobDetail" ref="runKenoGrabbingCheck" />
- 		<property name="cronExpression" value="0 0/1 * * * ?" />
+	<bean id="cronTriggerCheck" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="runKenoGrabbingCheck" />
+		<property name="cronExpression" value="0 0/1 * * * ?" />
 
- 	</bean> 
+	</bean>
 
-	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+	<bean id="schedulerFactory" name="schedulerFactory"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
 		depends-on="sysParamManager">
 		<property name="triggers">
-			<list>				
-				<ref bean="cronTriggerWCA" />
-				<ref bean="cronTriggerCA" />
-				<ref bean="cronTriggerAU" />
-				<ref bean="cronTriggerSK" />
-				<ref bean="cronTriggerCheck" />
+			<list>
+				<!-- <ref bean="cronTriggerWCA" /> -->
+<!-- 				<ref bean="cronTriggerCA" /> -->
+				<!-- <ref bean="cronTriggerAU" /> -->
+				<!-- <ref bean="cronTriggerSK" /> -->
+                <ref bean="cronTriggerBJ" />
+				<!-- <ref bean="cronTriggerCheck" /> -->
 			</list>
 		</property>
 		<property name="quartzProperties">

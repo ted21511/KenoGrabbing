@@ -84,7 +84,11 @@
 	</bean>
 		
 	<bean id="KenoGrabbingSK" class="com.kn.grabbing.KenoGrabbingSK" >
-		<property name="url" value="${sk.url}" />	
+		<property name="url" value="${sk.url}" />
+	</bean>
+	
+	<bean id="KenoGrabbingBJ" class="com.kn.grabbing.KenoGrabbingBJ" >
+		<property name="url" value="${bj.url}" />
 	</bean>
 	
 	<bean id="KenoGrabbingCheck" class="com.kn.grabbing.KenoGrabbingCheck" >
