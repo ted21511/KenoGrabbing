@@ -73,7 +73,10 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 					for (Draw dList : list) {
 						String mappingNumber = dList.getNumber();
 						if (awardMap != null) {
-
+							newAward = awardMap.get(mappingNumber);
+							if (newAward != null) {
+								drawDAO.updateDrawResult(GameCode.KN.name(), Market.BJ.name(), mappingNumber, newAward);
+							}
 						} else {
 							if (mappingNumber.equals(newNumber) && dList.getResult() == null) {
 								newAward = KenoBJUtils.sortAward(newlist.get(1).text());

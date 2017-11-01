@@ -77,7 +77,6 @@ public class KenoBJUtils {
 
 			if (lsNumber <= dataNumber) {
 				String newAward = KenoBJUtils.sortAward(dateList.get(1).text());
-				System.out.println(number + "|" + newAward);
 				awardMap.put(number, newAward);
 			} else {
 				break;
