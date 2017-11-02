@@ -68,7 +68,7 @@ public class KenoGrabbingMT extends KenoGrabbingTask {
 			try {
 				httpRequestInfo.put("drawId", "" + draw.getId());
 				httpRequestInfo.put("gameCode", GameCode.KN.name());
-				httpRequestInfo.put("market", Market.AU.getMarketName());
+				httpRequestInfo.put("market", Market.MT.getMarketName());
 				httpRequestInfo.put("drawNumber", drawNumber);
 				httpRequestInfo.put("result", drawResult);
 				
@@ -78,7 +78,7 @@ public class KenoGrabbingMT extends KenoGrabbingTask {
 
 			} catch (Exception e) {
 				e.printStackTrace();			
-				logger.error("Error in drawing " + Market.AU.getMarketName() + " data. Error message: " + e.getMessage());			
+				logger.error("Error in drawing " + Market.MT.getMarketName() + " data. Error message: " + e.getMessage());			
 			}
 		}
 
