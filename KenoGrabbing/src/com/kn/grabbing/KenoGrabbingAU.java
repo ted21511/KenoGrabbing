@@ -86,8 +86,10 @@ public class KenoGrabbingAU extends KenoGrabbingTask {
 				httpRequestInfo.put("market", Market.AU.getMarketName());
 				httpRequestInfo.put("drawNumber", drawNumber);
 				httpRequestInfo.put("result", drawResult);
-
-				updateData(socketHttpDestination, httpRequestInfo, logger);
+				
+				if (draw.getResult() == null || draw.getResult().length() == 0) {
+					updateData(socketHttpDestination, httpRequestInfo, logger);
+				}
 
 			} catch (Exception e) {
 				e.printStackTrace();			

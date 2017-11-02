@@ -15,7 +15,7 @@ import com.kn.util.Market;
 
 public class KenoGrabbingMT extends KenoGrabbingTask {
 
-	private static final String FILENAME = "/usr/local/applications/lt-grabbing-server/Keno-Grabbing-MT.txt";
+	private static final String FILENAME = "C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt";
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingMT.class);
 	
 	public static void main(String[] args) {
@@ -64,15 +64,17 @@ public class KenoGrabbingMT extends KenoGrabbingTask {
 		if (!checkResult.isEmpty()) {
 			Draw draw = checkResult.get(0);
 			HashMap<String, String> httpRequestInfo = new HashMap<String, String>();
-
+			
 			try {
 				httpRequestInfo.put("drawId", "" + draw.getId());
 				httpRequestInfo.put("gameCode", GameCode.KN.name());
 				httpRequestInfo.put("market", Market.AU.getMarketName());
 				httpRequestInfo.put("drawNumber", drawNumber);
 				httpRequestInfo.put("result", drawResult);
-
-				updateData(socketHttpDestination, httpRequestInfo, logger);
+				
+				if (draw.getResult() == null || draw.getResult().length() == 0) {
+					updateData(socketHttpDestination, httpRequestInfo, logger);
+				}
 
 			} catch (Exception e) {
 				e.printStackTrace();			
