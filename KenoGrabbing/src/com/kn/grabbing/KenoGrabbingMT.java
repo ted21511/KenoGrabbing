@@ -64,15 +64,17 @@ public class KenoGrabbingMT extends KenoGrabbingTask {
 		if (!checkResult.isEmpty()) {
 			Draw draw = checkResult.get(0);
 			HashMap<String, String> httpRequestInfo = new HashMap<String, String>();
-
+			
 			try {
 				httpRequestInfo.put("drawId", "" + draw.getId());
 				httpRequestInfo.put("gameCode", GameCode.KN.name());
 				httpRequestInfo.put("market", Market.AU.getMarketName());
 				httpRequestInfo.put("drawNumber", drawNumber);
 				httpRequestInfo.put("result", drawResult);
-
-				updateData(socketHttpDestination, httpRequestInfo, logger);
+				
+				if (draw.getResult() == null || draw.getResult().length() == 0) {
+					updateData(socketHttpDestination, httpRequestInfo, logger);
+				}
 
 			} catch (Exception e) {
 				e.printStackTrace();			

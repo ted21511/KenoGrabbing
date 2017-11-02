@@ -87,9 +87,11 @@ public class KenoGrabbingWCA extends KenoGrabbingTask {
 				httpRequestInfo.put("market", Market.WCA.getMarketName());
 				httpRequestInfo.put("drawNumber", drawNumber);
 				httpRequestInfo.put("result", drawResult);
-
-				updateData(socketHttpDestination, httpRequestInfo, logger);
-
+				
+				if (draw.getResult() == null || draw.getResult().length() == 0) {
+					updateData(socketHttpDestination, httpRequestInfo, logger);
+				}
+				
 			} catch (Exception e) {
 				e.printStackTrace();			
 				logger.error("Error in drawing " + Market.WCA.getMarketName() + " data. Error message: " + e.getMessage());			
