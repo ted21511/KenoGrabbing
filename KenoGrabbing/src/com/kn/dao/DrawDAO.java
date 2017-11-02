@@ -46,7 +46,7 @@ public class DrawDAO {
 
 	public List<Draw> getStartNumber(String gameCode, String market) {
 		String sql = "SELECT TOP (1) * from draw where game_code='" + gameCode + "' and market='" + market
-				+ "'and draw_date= CONVERT(char(10), getdate(), 20)";
+				+ "'and draw_date= CONVERT(char(10), getdate(), 20) order by draw_id";
 		List<Draw> drawlist = genericHibernateDao.findBySql(Draw.class, sql);
 		return drawlist;
 	}
