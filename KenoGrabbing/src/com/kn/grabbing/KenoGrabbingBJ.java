@@ -49,7 +49,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 
 				changeIP(useIPList, error);
 				String pageUrl = url + page;
-				Document xmlDoc = Jsoup.connect(pageUrl).timeout(10000).post();
+				Document xmlDoc = Jsoup.connect(pageUrl).timeout(5000).post();
 				Elements newlist = KenoBJUtils.getNowNumber(xmlDoc);
 				String resultTime = KenoBJUtils.getNowDateTime();
 
@@ -133,7 +133,8 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 	public List<UseIPInfo> checkCNIP() {
 
 		List<UseIPInfo> ipList = new ArrayList<UseIPInfo>();
-
+		String checkIPUrl= checkipUrl;
+		
 		try {
 			Document doc = Jsoup.connect(ipUrl).ignoreContentType(true).timeout(5000).get();
 			String json = doc.select("body").text();
@@ -145,10 +146,10 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 				JSONObject tmpJson = jsonArray.getJSONObject(i);
 				String ip = tmpJson.get("ip").toString();
 				String port = tmpJson.get("port").toString();
-				checkipUrl = checkipUrl + "ip_ports%5B%5D=" + ip + "%3A" + port + "&";
+				checkIPUrl = checkIPUrl + "ip_ports%5B%5D=" + ip + "%3A" + port + "&";
 			}
 
-			Document ckipDoc = Jsoup.connect(checkipUrl).ignoreContentType(true).get();
+			Document ckipDoc = Jsoup.connect(checkIPUrl).ignoreContentType(true).get();
 			String ckipJson = ckipDoc.select("body").text();
 			String ipJson = KenoBJUtils.splitJson(ckipJson);
 
@@ -190,7 +191,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 			} else {
 				page++;
 				String pUrl = url + page;
-				xmlDoc = Jsoup.connect(pUrl).timeout(10000).post();
+				xmlDoc = Jsoup.connect(pUrl).timeout(5000).post();
 			}
 		}
 		return awardMap;
