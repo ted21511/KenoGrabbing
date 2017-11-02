@@ -34,7 +34,8 @@ public class KenoGrabbingSK extends KenoGrabbingTask {
 	public void startGrabbing() {
 
 		try {
-			System.out.println("----------Keno SK start----------");					 			 
+			System.out.println("----------Keno SK start----------");
+			int savetime = KenoSKUtils.getSaveTime();
 			Document xmlDoc = Jsoup.connect(url).timeout(10000).post();
 			String resultTime = KenoSKUtils.getNowDateTime();
 			Element newlist = KenoSKUtils.getNumber(xmlDoc);
@@ -61,7 +62,7 @@ public class KenoGrabbingSK extends KenoGrabbingTask {
 						if (awardMap != null) {
 							Calendar tmpDate = Calendar.getInstance();
 							tmpDate.setTime(mappingDate);
-							tmpDate.add(Calendar.HOUR_OF_DAY, -6);
+							tmpDate.add(Calendar.HOUR_OF_DAY, -6 - savetime);
 							SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 							String date = dateFormat.format(tmpDate.getTime());
 							String award = awardMap.get(date);
@@ -91,7 +92,7 @@ public class KenoGrabbingSK extends KenoGrabbingTask {
 			} else {
 				System.out.println("SK　尚未開獎！！");
 			}
-			System.out.println("----------Keno SK end----------");
+		    System.out.println("----------Keno SK end----------");
 			error = 1;
 		} catch (Exception e) {
 			e.printStackTrace();

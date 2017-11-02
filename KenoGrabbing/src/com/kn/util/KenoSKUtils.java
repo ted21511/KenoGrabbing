@@ -17,7 +17,20 @@ import com.ct.lk.domain.Draw;
 import com.sun.org.apache.regexp.internal.recompile;
 
 public class KenoSKUtils {
-
+	
+	private static int saveTime = 0;
+	
+	public static int getSaveTime() {
+		Calendar tmpDate = Calendar.getInstance();	
+		int month = tmpDate.get(Calendar.MONTH) + 1 ;	
+		if(month<4 || month>10){
+			saveTime = 1;
+		}else{
+			saveTime = 0;
+		}	
+		return saveTime;
+	}
+	
 	public static Element getNumber(Document xmlDoc) {
 		Element newlist = null;
 		try {
@@ -47,10 +60,10 @@ public class KenoSKUtils {
 		int mi = Integer.parseInt(a[1]);
 		
 		Calendar nowdate = Calendar.getInstance();
-		if (hour + 6 >= 24){
+		if (hour + 6 + saveTime>= 24){
 			nowdate.add(Calendar.DAY_OF_MONTH, -1);
 		}
-		nowdate.set(Calendar.HOUR_OF_DAY, hour + 6);
+		nowdate.set(Calendar.HOUR_OF_DAY, hour + 6 + saveTime);
 		nowdate.set(Calendar.MINUTE, mi);
 		nowdate.set(Calendar.SECOND, 0);
 
@@ -66,10 +79,10 @@ public class KenoSKUtils {
 		int hour = Integer.parseInt(a[0]);
 		
 		Calendar startdate = Calendar.getInstance();
-		if (hour >= 18){
+		if (hour >= 18 - saveTime){
 			startdate.add(Calendar.DAY_OF_MONTH, -1);
 		}
-		startdate.set(Calendar.HOUR_OF_DAY, 11);
+		startdate.set(Calendar.HOUR_OF_DAY, 11 + saveTime);
 		startdate.set(Calendar.MINUTE, 0);
 		startdate.set(Calendar.SECOND, 0);
 
@@ -101,7 +114,7 @@ public class KenoSKUtils {
 		Date date = drawlist.get(drawlist.size() - 1).getEndTime();
 		Calendar tmpLastDate = Calendar.getInstance();
 		tmpLastDate.setTime(date);
-		tmpLastDate.add(Calendar.HOUR_OF_DAY, -6);
+		tmpLastDate.add(Calendar.HOUR_OF_DAY, -6 - saveTime);
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 		String lastdate = dateFormat.format(tmpLastDate.getTime());
@@ -115,7 +128,7 @@ public class KenoSKUtils {
 		String eventvalidation = xmlDoc.select("#__EVENTVALIDATION").val();
 
 		Calendar date = Calendar.getInstance();
-		date.add(Calendar.HOUR_OF_DAY, -6);
+		date.add(Calendar.HOUR_OF_DAY, -6 - saveTime);
 
 		String ddlDay = "" + date.get(Calendar.DAY_OF_MONTH);
 		int tmpDdlMonth = date.get(Calendar.MONTH) + 1;
