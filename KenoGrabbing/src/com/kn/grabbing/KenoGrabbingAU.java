@@ -39,7 +39,8 @@ public class KenoGrabbingAU extends KenoGrabbingTask {
 			String drawDate = new SimpleDateFormat("yyyy-MM-dd").format(draw.getDate());
 			
 	        Connection.Response response = Jsoup.connect(url.replace("drawNumber", startDrawNumber).replaceAll("drawDate", drawDate)).userAgent("Mozilla/5.0 (Windows NT 6.2; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0")
-	                .method(Connection.Method.GET).ignoreContentType(true)
+	                .timeout(10000)
+	        		.method(Connection.Method.GET).ignoreContentType(true)
 	                .execute();
 	        
 			Document doc= response.parse();
