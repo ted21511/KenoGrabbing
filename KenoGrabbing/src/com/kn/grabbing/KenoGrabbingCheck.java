@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class KenoGrabbingCheck extends KenoGrabbingTask {
 				sendNotifyMail("Keno Market exception in [" + market.getMarketName() + "] Please check", "[" + market.getMarketName() + "]" + "超過三期DATA未更新，請檢查網站/期號是否正常。");
 			}
 		}
+		resultStr += "Last updated time: " + Calendar.getInstance().getTime().toString();
 		System.out.println(resultStr);
 		try {
             File file = new File("/usr/local/applications/lt-grabbing-server/keno-check-result.txt");
