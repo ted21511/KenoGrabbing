@@ -37,8 +37,10 @@ public class KenoGrabbingCA extends KenoGrabbingTask{
 			String resultTime = KenoCAUtils.getNowDateTime();
 			String newNumber = newlist.get("firstAward").get("drawNbr").toString();
 			String startNumber = newlist.get("lastAward").get("drawNbr").toString();
-			List<Draw> list = drawDAO.getDrawNum(GameCode.KN.name(), Market.CA.name(), newNumber);
-			List<Draw> drawlist = drawDAO.getDrawNumList(GameCode.KN.name(), Market.CA.name(), startNumber, newNumber);
+			List<Draw> list = null;
+			List<Draw> drawlist = null;
+			list = drawDAO.getDrawNum(GameCode.KN.name(), Market.CA.name(), newNumber);
+			drawlist = drawDAO.getDrawNumList(GameCode.KN.name(), Market.CA.name(), startNumber, newNumber);
 			HashMap<String, String> httpRequestInfo = null;
 			HashMap<String, String> awardMap = null;
 			String newAward = null;

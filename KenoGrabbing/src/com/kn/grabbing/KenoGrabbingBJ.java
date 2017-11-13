@@ -46,7 +46,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 		try {
 
 			if (!useIPList.isEmpty()) {
-
+	
 				changeIP(useIPList, error);
 				String pageUrl = url + page;
 				Document xmlDoc = Jsoup.connect(pageUrl).timeout(5000).post();
@@ -56,8 +56,10 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 				String newNumber = newlist.get(0).text();
 				List<Draw> getStartNB = drawDAO.getStartNumber(GameCode.KN.name(), Market.BJ.name());
 				String startNumber = getStartNB.get(0).getNumber();
-				List<Draw> list = drawDAO.getDrawNum(GameCode.KN.name(), Market.BJ.name(), newNumber);
-				List<Draw> drawlist = drawDAO.getDrawNumList(GameCode.KN.name(), Market.BJ.name(), startNumber,
+				List<Draw> list = null;
+				List<Draw> drawlist = null;
+				list = drawDAO.getDrawNum(GameCode.KN.name(), Market.BJ.name(), newNumber);
+				drawlist = drawDAO.getDrawNumList(GameCode.KN.name(), Market.BJ.name(), startNumber,
 						newNumber);
 				HashMap<String, String> awardMap = null;
 				HashMap<String, String> httpRequestInfo = null;

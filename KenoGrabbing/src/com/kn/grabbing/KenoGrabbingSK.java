@@ -44,8 +44,10 @@ public class KenoGrabbingSK extends KenoGrabbingTask {
 				String newNumber = newlist.select("#_ctl0_ContentPlaceHolder_repResult__ctl1_lblDrawTimeValue").text();
 				String newDate = KenoSKUtils.formatNowDate(newNumber);
 				String startDate = KenoSKUtils.formatStartDate(newNumber);
-				List<Draw> list = drawDAO.getDrawDateTime(GameCode.KN.name(), Market.SK.name(), newDate);
-				List<Draw> drawlist = drawDAO.getDrawDateList(GameCode.KN.name(), Market.SK.name(), startDate, newDate);
+				List<Draw> list = null;
+				List<Draw> drawlist = null;
+				list = drawDAO.getDrawDateTime(GameCode.KN.name(), Market.SK.name(), newDate);
+				drawlist = drawDAO.getDrawDateList(GameCode.KN.name(), Market.SK.name(), startDate, newDate);
 				HashMap<String, String> awardMap = null;
 				HashMap<String, String> httpRequestInfo = null;
 				String newAward = null;
