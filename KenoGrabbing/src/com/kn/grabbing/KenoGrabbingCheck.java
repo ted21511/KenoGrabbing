@@ -33,7 +33,7 @@ public class KenoGrabbingCheck extends KenoGrabbingTask {
 		resultStr += "Last updated time: " + Calendar.getInstance().getTime().toString();
 		System.out.println(resultStr);
 		try {
-            File file = new File("/usr/local/applications/lt-grabbing-server/keno-check-result.txt");
+            File file = new File("/usr/local/applications/kn-grabbing-server/keno-check-result.txt");
             BufferedWriter output = new BufferedWriter(new FileWriter(file));
             output.write(resultStr);
             output.close();
