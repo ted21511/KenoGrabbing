@@ -10,6 +10,7 @@ public class SmtpInfo {
 	private String emailFailText;
 	private String emailSuccessfulSubject;
 	private String emailSuccessfulText;
+	private String emailLocation;
 
 	public String getSmtpName() {
 		return smtpName;
@@ -81,6 +82,14 @@ public class SmtpInfo {
 
 	public void setEmailSuccessfulText(String emailSuccessfulText) {
 		this.emailSuccessfulText = emailSuccessfulText;
+	}
+
+	public String getEmailLocation() {
+		return emailLocation;
+	}
+
+	public void setEmailLocation(String emailLocation) {
+		this.emailLocation = emailLocation;
 	}
 
 }

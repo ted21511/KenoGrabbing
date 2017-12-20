@@ -50,6 +50,7 @@
 		<property name="emailFailText" value="${mail.connected.fail.text}"/>
 		<property name="emailSuccessfulSubject" value="${mail.reconnected.successful.subject}"/>
 		<property name="emailSuccessfulText" value="${mail.reconnected.successful.text}"/>
+		<property name="emailLocation" value="${mail.location}"/>
 	</bean>
 
 	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">

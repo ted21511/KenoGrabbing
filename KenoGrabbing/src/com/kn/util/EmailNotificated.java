@@ -42,7 +42,7 @@ public class EmailNotificated {
 		// Create the email addresses involved
 		try {
 			InternetAddress from = new InternetAddress(broadcastAccount);
-			message.setSubject(subject);
+			message.setSubject("[" + smtpInfo.getEmailLocation().toUpperCase() + "] " + subject);
 			message.setText(content);
 			message.setFrom(from);
 			

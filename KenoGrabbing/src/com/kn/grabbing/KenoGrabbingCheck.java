@@ -27,7 +27,7 @@ public class KenoGrabbingCheck extends KenoGrabbingTask {
 					", GameCode: " + market.getGameCode() + ", count: " + result.size() + "\n";
 			
 			if (result.size() >= 3) {
-				sendNotifyMail("Keno Market exception in [" + market.getMarketName() + "] Please check", "[" + market.getMarketName() + "]" + "超過三期DATA未更新，請檢查網站/期號是否正常。");
+				sendNotifyMail("Keno [" + market.getMarketName() + "]" + " Market exception Please check", "[" + market.getMarketName() + "]" + "超過三期DATA未更新，請從下方連結檢查網站/期號是否正常。\nhttp://grabbermt.staging.qqcp518.net/market.jsp");
 			}
 		}
 		resultStr += "Last updated time: " + Calendar.getInstance().getTime().toString();
