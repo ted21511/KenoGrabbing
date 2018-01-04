@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import com.kn.util.GameCode;
 import com.kn.util.KenoBJUtils;
 import com.kn.util.Market;
 import com.kn.util.UseIPInfo;
+import com.sun.mail.iap.ParsingException;
 
 public class KenoGrabbingBJ extends KenoGrabbingTask {
 
@@ -25,6 +27,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 	private int page = 1;
 	private String ipUrl = "http://www.xdaili.cn/ipagent//freeip/getFreeIps?page=1&rows=10";
 	private String checkipUrl = "http://www.xdaili.cn/ipagent//checkIp/ipList?";
+	private String subCheckipUrl = "http://cn-proxy.com/";
 	private static boolean flag = true;
 	int error = 1;
 
@@ -36,17 +39,20 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 	public void startGrabbing() {
 
 		System.out.println("----------Keno BJ start----------");
-		List<UseIPInfo> useIPList = checkCNIP();
-		startMain(useIPList);
+		List<UseIPInfo> useIPList = new ArrayList<UseIPInfo>();
+		useIPList = checkCNIP();
+		if (useIPList.isEmpty() || useIPList.size()< 3) {
+			useIPList = subCheckCNIP(useIPList);
+		}
+	   startMain(useIPList);
 		System.out.println("----------Keno BJ end----------");
 
 	}
 
 	public void startMain(List<UseIPInfo> useIPList) {
-		try {
-
+		try {			
 			if (!useIPList.isEmpty()) {
-	
+
 				changeIP(useIPList, error);
 				String pageUrl = url + page;
 				Document xmlDoc = Jsoup.connect(pageUrl).timeout(5000).post();
@@ -59,8 +65,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 				List<Draw> list = null;
 				List<Draw> drawlist = null;
 				list = drawDAO.getDrawNum(GameCode.KN.name(), Market.BJ.name(), newNumber);
-				drawlist = drawDAO.getDrawNumList(GameCode.KN.name(), Market.BJ.name(), startNumber,
-						newNumber);
+				drawlist = drawDAO.getDrawNumList(GameCode.KN.name(), Market.BJ.name(), startNumber, newNumber);
 				HashMap<String, String> awardMap = null;
 				HashMap<String, String> httpRequestInfo = null;
 				String newAward = null;
@@ -101,6 +106,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 			} else {
 				System.out.println("目前無ip可以使用orIP回應速度過慢");
 			}
+			System.getProperties().clear();
 			error = 1;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,8 +142,8 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 	public List<UseIPInfo> checkCNIP() {
 
 		List<UseIPInfo> ipList = new ArrayList<UseIPInfo>();
-		String checkIPUrl= checkipUrl;
-		
+		String checkIPUrl = checkipUrl;
+
 		try {
 			Document doc = Jsoup.connect(ipUrl).ignoreContentType(true).timeout(5000).get();
 			String json = doc.select("body").text();
@@ -170,10 +176,40 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 						useIPInfo.setIp(tmpIPJson.get("ip").toString());
 						useIPInfo.setPort(tmpIPJson.get("port").toString());
 						useIPInfo.setTime(time);
-						ipList.add(useIPInfo);
+						ipList.add(useIPInfo);						
 					}
 				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ipList;
+		}
+		return ipList;
+	}
+
+	public List<UseIPInfo> subCheckCNIP(List<UseIPInfo> useIPList) {
+		
+		List<UseIPInfo> ipList = useIPList;
+		try {
+			Document doc = Jsoup.connect(subCheckipUrl).ignoreContentType(true).timeout(5000).get();
+			Elements allIP = doc.select(".sortable").select("tbody").select("tr");
+			for (Element checkIP :  allIP) {
+				String checkPort = checkIP.select("td").get(1).text();
+				if (checkPort.equals("80")) {
+					String[] speed = checkIP.select(".bar").attr("style").split("\\s|;|%");
+					int resSpeed = Integer.parseInt(speed[1]);					
+					if (resSpeed >= 75) {										
+						UseIPInfo useIPInfo = new UseIPInfo();
+						useIPInfo.setIp(checkIP.select("tr").select("td").get(0).text());
+						useIPInfo.setPort("80");
+						ipList.add(useIPInfo);
+						if(ipList.size() > 4){
+							return ipList;
+						}
+					}
+				}
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
