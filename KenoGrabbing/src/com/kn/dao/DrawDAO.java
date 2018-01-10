@@ -67,13 +67,15 @@ public class DrawDAO {
 		return genericHibernateDao.findBySql(Draw.class, checkSql.toString());
 	}
 	
-	public List<Draw> selectByDrawNumberAndMarket(String market, String drawNumber, String gameCode, String drawDate) {
+	public List<Draw> selectByDrawNumberAndMarketAU(String market, String drawNumber, String gameCode) {
 		StringBuffer checkSql = new StringBuffer();
 		checkSql.append("Select * from draw ");
 		checkSql.append("where draw_number = '" + drawNumber + "' ");
 		checkSql.append("and game_code = '" + gameCode + "' ");
 		checkSql.append("and market = '" + market + "' ");
-		checkSql.append("and draw_date = '" + drawDate + "' ");
+//		checkSql.append("and draw_date = '" + drawDate + "' ");
+		checkSql.append("and begin_time < CURRENT_TIMESTAMP ");
+		checkSql.append("order by draw_id desc ");
 		
 		return genericHibernateDao.findBySql(Draw.class, checkSql.toString());
 	}

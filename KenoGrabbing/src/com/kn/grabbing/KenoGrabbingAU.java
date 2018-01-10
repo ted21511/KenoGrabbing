@@ -55,10 +55,11 @@ public class KenoGrabbingAU extends KenoGrabbingTask {
 				JSONObject obj = list.getJSONObject(i);
 				drawNumber = obj.getInt("game-number")+"";
 				drawResult = obj.get("draw").toString();
-				
+//				drawDate = getDrawdate(drawNumber, resultList, drawDate);
 //				System.out.println(drawNumber + " - " + drawResult);
 				
-				processDrawData(drawNumber, drawResult, drawDate);
+//				processDrawData(drawNumber, drawResult, drawDate);
+				processDrawData(drawNumber, drawResult);
 			}
 			
 		} catch (Exception e) {
@@ -74,8 +75,19 @@ public class KenoGrabbingAU extends KenoGrabbingTask {
 		} 
 	}
 	
-	private void processDrawData(String drawNumber, String drawResult, String drawDate) {
-		List<Draw> checkResult = drawDAO.selectByDrawNumberAndMarket(Market.AU.getMarketName(), drawNumber, GameCode.KN.name(), drawDate);
+//	private String getDrawdate(String drawNumber, List<Draw> resultList, String drawDate) {
+//		String dNumber;
+//		for (Draw draw : resultList) {
+//			dNumber = draw.getNumber();
+//			if (drawNumber.equals(dNumber)) {
+//				return new SimpleDateFormat("yyyy-MM-dd").format(draw.getDate());
+//			}
+//		}
+//		return drawDate;
+//	}
+
+	private void processDrawData(String drawNumber, String drawResult) {
+		List<Draw> checkResult = drawDAO.selectByDrawNumberAndMarketAU(Market.AU.getMarketName(), drawNumber, GameCode.KN.name());
 
 		if (!checkResult.isEmpty()) {
 			Draw draw = checkResult.get(0);
