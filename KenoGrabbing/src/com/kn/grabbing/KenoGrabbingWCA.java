@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.ct.lk.domain.Draw;
 import com.google.common.collect.Lists;
 import com.kn.util.Market;
+import com.kn.util.CommonUnits;
 import com.kn.util.GameCode;
 
 public class KenoGrabbingWCA extends KenoGrabbingTask {
@@ -25,14 +26,16 @@ public class KenoGrabbingWCA extends KenoGrabbingTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingWCA.class);
 	
-	public static void main(String[] args) {
-		KenoGrabbingWCA task = new KenoGrabbingWCA();
-		task.startGrabbing();
-
-	}
+//	public static void main(String[] args) {
+//		KenoGrabbingWCA task = new KenoGrabbingWCA();
+//		task.startGrabbing();
+//
+//	}
 	
 	public void startGrabbing() {
+		String resultTime = CommonUnits.getNowDateTime();
 		try {
+			System.out.println("----------Keno WCA start----------");
 			Draw draw = drawDAO.selectMAXDrawDate(Market.WCA.getMarketName(), GameCode.KN.name()).get(0);
 			Date drawDate = draw.getDate();
 			int day = drawDate.getDate();
@@ -57,8 +60,9 @@ public class KenoGrabbingWCA extends KenoGrabbingTask {
 						tds.get(16).text() + "," + tds.get(17).text() + "," + tds.get(18).text() + "," + tds.get(19).text() + "," + tds.get(20).text() + "]";
 				
 //				System.out.println(drawNumber + " - " + drawResult);
-				processDrawData(drawNumber, drawResult);
+				processDrawData(drawNumber, drawResult, resultTime);
 			}	
+			System.out.println("----------Keno WCA end----------");
 			error = 1;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -68,34 +72,32 @@ public class KenoGrabbingWCA extends KenoGrabbingTask {
 				changeIP();
 			} else {
 				logger.error("Error in drawing " + Market.WCA.getMarketName() + " data. Error message: " + e.getMessage());
+				drawDAO.insertErrorLog(GameCode.KN.name(), Market.WCA.name(), resultTime, 1);
 				error = 1;
 			}
 		} 
 
 	}
 
-	private void processDrawData(String drawNumber, String drawResult) {
+	private void processDrawData(String drawNumber, String drawResult, String resultTime) {
 		List<Draw> checkResult = drawDAO.selectByDrawNumberAndMarket(Market.WCA.getMarketName(), drawNumber, GameCode.KN.name());
 
 		if (!checkResult.isEmpty()) {
 			Draw draw = checkResult.get(0);
 			HashMap<String, String> httpRequestInfo = new HashMap<String, String>();
 
-			try {
 				httpRequestInfo.put("drawId", "" + draw.getId());
 				httpRequestInfo.put("gameCode", GameCode.KN.name());
 				httpRequestInfo.put("market", Market.WCA.getMarketName());
 				httpRequestInfo.put("drawNumber", drawNumber);
+				httpRequestInfo.put("drawResultTime", resultTime);
 				httpRequestInfo.put("result", drawResult);
 				
 				if (draw.getResult() == null || draw.getResult().length() == 0) {
 					updateData(socketHttpDestination, httpRequestInfo, logger);
+					drawDAO.insertLog(httpRequestInfo,0);
 				}
-				
-			} catch (Exception e) {
-				e.printStackTrace();			
-				logger.error("Error in drawing " + Market.WCA.getMarketName() + " data. Error message: " + e.getMessage());			
-			}
+		
 		}
 
 	}

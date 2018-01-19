@@ -33,15 +33,6 @@ public class KenoCAUtils {
 		return newlist;
 	}
 
-	public static String getNowDateTime() {
-
-		Date now = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String dateTime = dateFormat.format(now);
-
-		return dateTime;
-	}
-
 	public static HashMap<String, String> Crawl(Document xmlDoc, String lastNumber) {
 
 		HashMap<String, String> awardMap = new HashMap<String, String>();
