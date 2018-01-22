@@ -34,9 +34,9 @@ public class KenoGrabbingMT extends KenoGrabbingTask {
 
 			String sCurrentLine;
 			while ((sCurrentLine = br.readLine()) != null) {
-				if (sCurrentLine.contains("-")) {
-					String drawNumber = sCurrentLine.split("-")[0];
-					String drawResult = sCurrentLine.split("-")[1];	
+				if (sCurrentLine.contains("@")) {
+					String drawNumber = sCurrentLine.split("@")[0];
+					String drawResult = sCurrentLine.split("@")[1];	
 //					System.out.println(drawNumber + drawResult);
 					processDrawData(drawNumber, drawResult);
 				}

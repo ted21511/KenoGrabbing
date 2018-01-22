@@ -15,6 +15,7 @@ import com.ct.lk.domain.Draw;
 import com.google.common.collect.Lists;
 import com.kn.util.Market;
 import com.kn.util.GameCode;
+import com.kn.util.KenoWCAUtils;
 
 public class KenoGrabbingWCA extends KenoGrabbingTask {
 	
@@ -40,26 +41,27 @@ public class KenoGrabbingWCA extends KenoGrabbingTask {
 			int year = drawDate.getYear()+1900;			
 			
 			Document doc= Jsoup.parse(new URL(url + month + "/" + day + "/" + year), 10000);
-			Element table = doc.getElementsByAttributeValue("class", "kenoTable").first();
-			List<Element> trs = table.select("tr");
-			trs = Lists.reverse(trs);
-			dataSize = trs.size()<issuePeriod? trs.size():issuePeriod;
-			
-			String drawNumber = "";
-			String drawResult = "";
-			for (int i=0 ; i<dataSize ; i++) {
-				Element tr = trs.get(i);
-				List<Element> tds = tr.select("td");
-				drawNumber = tds.get(0).text();
-				drawResult = "[" + tds.get(1).text() + "," + tds.get(2).text() + "," + tds.get(3).text() + "," + tds.get(4).text() + "," + tds.get(5).text() + "," + 
-						tds.get(6).text() + "," + tds.get(7).text() + "," + tds.get(8).text() + "," + tds.get(9).text() + "," + tds.get(10).text() + "," + 
-						tds.get(11).text() + "," + tds.get(12).text() + "," + tds.get(13).text() + "," + tds.get(14).text() + "," + tds.get(15).text() + "," + 
-						tds.get(16).text() + "," + tds.get(17).text() + "," + tds.get(18).text() + "," + tds.get(19).text() + "," + tds.get(20).text() + "]";
+			Element table = KenoWCAUtils.getTargetTable(doc);
+			if (table != null) {
+				List<Element> trs = table.select("tr");
+				trs = Lists.reverse(trs);
+				dataSize = trs.size()<issuePeriod? trs.size():issuePeriod;
 				
-//				System.out.println(drawNumber + " - " + drawResult);
-				processDrawData(drawNumber, drawResult);
-			}	
-			error = 1;
+				String drawNumber = "";
+				String drawResult = "";
+				for (int i=0 ; i<dataSize ; i++) {
+					Element tr = trs.get(i);
+					List<Element> tds = tr.select("td");
+					drawNumber = tds.get(0).text();
+					drawResult = "[" + tds.get(1).text() + "," + tds.get(2).text() + "," + tds.get(3).text() + "," + tds.get(4).text() + "," + tds.get(5).text() + "," + 
+							tds.get(6).text() + "," + tds.get(7).text() + "," + tds.get(8).text() + "," + tds.get(9).text() + "," + tds.get(10).text() + "," + 
+							tds.get(11).text() + "," + tds.get(12).text() + "," + tds.get(13).text() + "," + tds.get(14).text() + "," + tds.get(15).text() + "," + 
+							tds.get(16).text() + "," + tds.get(17).text() + "," + tds.get(18).text() + "," + tds.get(19).text() + "," + tds.get(20).text() + "]";
+					
+					processDrawData(drawNumber, drawResult);
+				}	
+				error = 1;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (error <= 3) {
