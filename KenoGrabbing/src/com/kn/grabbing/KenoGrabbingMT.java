@@ -16,9 +16,8 @@ import com.kn.util.Market;
 
 public class KenoGrabbingMT extends KenoGrabbingTask {
 
-	// private static final String FILENAME =
-	// "/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt";
-	private static final String FILENAME = "C:/Users/ted/Desktop/Keno-Grabbing-MT.txt";
+	private static final String FILENAME ="/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt";
+	//private static final String FILENAME = "C:/Users/ted/Desktop/Keno-Grabbing-MT.txt";
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingMT.class);
 
 	// public static void main(String[] args) {

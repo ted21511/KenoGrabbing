@@ -61,7 +61,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 				Elements newlist = KenoBJUtils.getNowNumber(xmlDoc);
 
 				String newNumber = newlist.get(0).text();
-				List<Draw> getStartNB = drawDAO.getStartNumber(GameCode.KN.name(), Market.BJ.name());
+				List<Draw> getStartNB = drawDAO.getStartNumber(GameCode.KN.name(), Market.BJ.name(),newNumber);
 				String startNumber = getStartNB.get(0).getNumber();
 				List<Draw> list = null;
 				List<Draw> drawlist = null;
