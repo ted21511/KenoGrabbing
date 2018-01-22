@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ct.lk.domain.Draw;
+import com.kn.util.CommonUnits;
 import com.kn.util.GameCode;
 import com.kn.util.KenoBJUtils;
 import com.kn.util.Market;
@@ -39,17 +40,18 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 	public void startGrabbing() {
 
 		System.out.println("----------Keno BJ start----------");
+		String resultTime = CommonUnits.getNowDateTime();
 		List<UseIPInfo> useIPList = new ArrayList<UseIPInfo>();
-		useIPList = checkCNIP();
+		useIPList = checkCNIP(resultTime);
 		if (useIPList.isEmpty() || useIPList.size()< 3) {
-			useIPList = subCheckCNIP(useIPList);
+			useIPList = subCheckCNIP(useIPList,resultTime);
 		}
-	   startMain(useIPList);
+	   startMain(useIPList,resultTime);
 		System.out.println("----------Keno BJ end----------");
 
 	}
 
-	public void startMain(List<UseIPInfo> useIPList) {
+	public void startMain(List<UseIPInfo> useIPList,String resultTime) {
 		try {			
 			if (!useIPList.isEmpty()) {
 
@@ -57,7 +59,6 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 				String pageUrl = url + page;
 				Document xmlDoc = Jsoup.connect(pageUrl).timeout(5000).post();
 				Elements newlist = KenoBJUtils.getNowNumber(xmlDoc);
-				String resultTime = KenoBJUtils.getNowDateTime();
 
 				String newNumber = newlist.get(0).text();
 				List<Draw> getStartNB = drawDAO.getStartNumber(GameCode.KN.name(), Market.BJ.name());
@@ -98,6 +99,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 								httpRequestInfo.put("result", newAward);
 
 								updateData(socketHttpDestination, httpRequestInfo, logger);
+								drawDAO.insertLog(httpRequestInfo,0);
 							}
 						}
 					}
@@ -105,6 +107,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 
 			} else {
 				System.out.println("目前無ip可以使用orIP回應速度過慢");
+				drawDAO.insertErrorLog(GameCode.KN.name(), Market.BJ.name(), resultTime, 4);
 			}
 			System.getProperties().remove("http.proxyHost");
 			System.getProperties().remove("http.proxyPort");
@@ -114,9 +117,10 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 			if (error <= 3) {
 				System.out.println("BJ錯誤次數:" + error);
 				error++;
-				startMain(useIPList);
+				startMain(useIPList,resultTime);
 			} else {
 				logger.error("Error in drawing " + Market.BJ.name() + " data. Error message: " + e.getMessage());
+				drawDAO.insertErrorLog(GameCode.KN.name(), Market.BJ.name(), resultTime, 1);
 				error = 1;
 			}
 		}
@@ -140,7 +144,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 
 	}
 
-	public List<UseIPInfo> checkCNIP() {
+	public List<UseIPInfo> checkCNIP(String resultTime) {
 
 		List<UseIPInfo> ipList = new ArrayList<UseIPInfo>();
 		String checkIPUrl = checkipUrl;
@@ -183,12 +187,12 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ipList;
+			drawDAO.insertErrorLog(GameCode.KN.name(), Market.BJ.name(), resultTime, 3);
 		}
 		return ipList;
 	}
 
-	public List<UseIPInfo> subCheckCNIP(List<UseIPInfo> useIPList) {
+	public List<UseIPInfo> subCheckCNIP(List<UseIPInfo> useIPList,String resultTime) {
 		
 		List<UseIPInfo> ipList = useIPList;
 		try {
@@ -213,6 +217,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			drawDAO.insertErrorLog(GameCode.KN.name(), Market.BJ.name(), resultTime, 3);
 		}
 		return ipList;
 	}

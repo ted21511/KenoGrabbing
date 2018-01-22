@@ -44,15 +44,6 @@ public class KenoSKUtils {
 		return newlist;
 	}
 
-	public static String getNowDateTime() {
-
-		Date now = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String dateTime = dateFormat.format(now);
-
-		return dateTime;
-	}
-
 	public static String formatNowDate(String newNumber) {
 
 		String a[] = newNumber.split(":");

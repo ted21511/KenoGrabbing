@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ct.lk.domain.Draw;
+import com.kn.util.CommonUnits;
 import com.kn.util.GameCode;
 import com.kn.util.Market;
 import com.kn.util.KenoCAUtils;
@@ -29,12 +30,11 @@ public class KenoGrabbingCA extends KenoGrabbingTask{
 //    }
 
 	public void startGrabbing() {
-		
+		String resultTime = CommonUnits.getNowDateTime();
 		try {
 			System.out.println("----------Keno CA start----------");
 			Document xmlDoc = Jsoup.connect(url).ignoreContentType(true).timeout(10000).get();
 			HashMap<String,JSONObject> newlist = KenoCAUtils.getNumber(xmlDoc);
-			String resultTime = KenoCAUtils.getNowDateTime();
 			String newNumber = newlist.get("firstAward").get("drawNbr").toString();
 			String startNumber = newlist.get("lastAward").get("drawNbr").toString();
 			List<Draw> list = null;
@@ -73,6 +73,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask{
 							httpRequestInfo.put("result", newAward);
 
 							updateData(socketHttpDestination, httpRequestInfo, logger);
+							drawDAO.insertLog(httpRequestInfo,0);
 						}				
 					}
 				}
@@ -88,6 +89,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask{
 				changeIP();
 			} else {
 				logger.error("Error in drawing " + Market.CA.name() + " data. Error message: " + e.getMessage());
+				drawDAO.insertErrorLog(GameCode.KN.name(), Market.CA.name(), resultTime, 1);
 				error = 1;
 			}
 		}

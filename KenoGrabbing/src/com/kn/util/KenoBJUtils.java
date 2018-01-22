@@ -37,15 +37,6 @@ public class KenoBJUtils {
 		return newList;
 	}
 
-	public static String getNowDateTime() {
-
-		Date now = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		String dateTime = dateFormat.format(now);
-
-		return dateTime;
-	}
-
 	public static String sortAward(String tmpaward) {
 
 		String[] splitAward = tmpaward.split(",");

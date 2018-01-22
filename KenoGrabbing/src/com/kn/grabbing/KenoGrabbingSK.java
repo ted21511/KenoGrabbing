@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 
 import com.ct.lk.domain.Draw;
-
+import com.kn.util.CommonUnits;
 import com.kn.util.GameCode;
 import com.kn.util.KenoSKUtils;
 import com.kn.util.Market;
@@ -32,12 +32,11 @@ public class KenoGrabbingSK extends KenoGrabbingTask {
 
 	
 	public void startGrabbing() {
-
+		String resultTime = CommonUnits.getNowDateTime();
 		try {
 			System.out.println("----------Keno SK start----------");
 			int savetime = KenoSKUtils.getSaveTime();
 			Document xmlDoc = Jsoup.connect(url).timeout(10000).post();
-			String resultTime = KenoSKUtils.getNowDateTime();
 			Element newlist = KenoSKUtils.getNumber(xmlDoc);
 			if (newlist != null) {
 
@@ -84,7 +83,7 @@ public class KenoGrabbingSK extends KenoGrabbingTask {
 								httpRequestInfo.put("result", newAward);
 
 								updateData(socketHttpDestination, httpRequestInfo, logger);
-
+								drawDAO.insertLog(httpRequestInfo,0);
 							}
 
 						}
@@ -104,6 +103,7 @@ public class KenoGrabbingSK extends KenoGrabbingTask {
 				changeIP();
 			} else {
 				logger.error("Error in drawing " + Market.SK.name() + " data. Error message: " + e.getMessage());
+				drawDAO.insertErrorLog(GameCode.KN.name(), Market.SK.name(), resultTime, 1);
 				error = 1;
 			}
 		}
