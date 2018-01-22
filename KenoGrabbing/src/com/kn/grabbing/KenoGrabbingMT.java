@@ -2,7 +2,6 @@ package com.kn.grabbing;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,7 +50,6 @@ public class KenoGrabbingMT extends KenoGrabbingTask {
 								if (sCurrentLine.contains("@")) {
 									String drawNumber = sCurrentLine.split("@")[0];
 									String drawResult = sCurrentLine.split("@")[1];
-									System.out.println(drawNumber + drawResult);
 									processDrawData(drawNumber, drawResult, resultTime);
 								}
 							} else {
