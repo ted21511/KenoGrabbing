@@ -107,8 +107,7 @@ public class KenoGrabbingAU extends KenoGrabbingTask {
 				httpRequestInfo.put("result", drawResult);
 				
 				if (draw.getResult() == null || draw.getResult().length() == 0) {
-					updateData(socketHttpDestination, httpRequestInfo, logger);
-					drawDAO.insertLog(httpRequestInfo,0);
+					updateData(socketHttpDestination, httpRequestInfo, logger);					
 				}
 		}
 

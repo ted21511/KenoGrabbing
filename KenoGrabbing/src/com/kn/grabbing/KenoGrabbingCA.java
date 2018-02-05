@@ -72,8 +72,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask{
 							httpRequestInfo.put("drawResultTime", resultTime);
 							httpRequestInfo.put("result", newAward);
 
-							updateData(socketHttpDestination, httpRequestInfo, logger);
-							drawDAO.insertLog(httpRequestInfo,0);
+							updateData(socketHttpDestination, httpRequestInfo, logger);							
 						}				
 					}
 				}

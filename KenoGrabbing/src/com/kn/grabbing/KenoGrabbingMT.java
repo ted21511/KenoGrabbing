@@ -35,34 +35,52 @@ public class KenoGrabbingMT extends KenoGrabbingTask {
 			br = new BufferedReader(fr);
 
 			String sCurrentLine;
+			String checkResultTime = null;
+			String checkLastUpdateTime = null;
+			String msgCode = null;
+			HashMap<String, String> result = new HashMap<String, String>();
+			int nHr = 0;
+			int lHr = 0;
+
 			while ((sCurrentLine = br.readLine()) != null) {
 
 				if (sCurrentLine.contains("Last updated time:")) {
 					String lastUpdateTime = sCurrentLine.split(": ")[1];
-					String[] checkResultTime = resultTime.split(":");
-					String[] checkLastUpdateTime = lastUpdateTime.split(":");
-					int nHr = Integer.parseInt(checkResultTime[1]);
-					int lHr = Integer.parseInt(checkLastUpdateTime[1]);
-					if (checkResultTime[0].equals(checkLastUpdateTime[0]) && nHr - lHr < 20) {
-						if (sCurrentLine.contains("Message_Code:")) {
-							String msgCode = sCurrentLine.split(": ")[1];
-							if (msgCode.equals("0")) {
-								if (sCurrentLine.contains("@")) {
-									String drawNumber = sCurrentLine.split("@")[0];
-									String drawResult = sCurrentLine.split("@")[1];
-									processDrawData(drawNumber, drawResult, resultTime);
-								}
-							} else {
+					String[] tmpcheckResultTime = resultTime.split(":");
+					String[] tmpcheckLastUpdateTime = lastUpdateTime.split(":");
+					checkResultTime = tmpcheckResultTime[0];
+					checkLastUpdateTime = tmpcheckLastUpdateTime[0];
+					nHr = Integer.parseInt(tmpcheckResultTime[1]);
+					lHr = Integer.parseInt(tmpcheckLastUpdateTime[1]);
+				}
 
-								int tmpMsgCode = Integer.parseInt(msgCode);
-								drawDAO.insertErrorLog(GameCode.KN.name(), Market.MT.name(), resultTime, tmpMsgCode);
-							}
+				if (sCurrentLine.contains("Message_Code:")) {
+					msgCode = sCurrentLine.split(": ")[1];
+				}
+
+				if (sCurrentLine.contains("@")) {
+					result.put(sCurrentLine.split("@")[0], sCurrentLine.split("@")[1]);
+				}
+
+			}
+
+			if (checkResultTime != null || checkLastUpdateTime != null || msgCode != null || result.size() != 0) {
+				if (checkResultTime.equals(checkLastUpdateTime) && nHr - lHr < 20) {
+					if (msgCode.equals("0")) {
+						for (Object key : result.keySet()) {
+							processDrawData(key.toString(), result.get(key), resultTime);
 						}
 					} else {
-						drawDAO.insertErrorLog(GameCode.KN.name(), Market.MT.name(), resultTime, 2);
+						int tmpMsgCode = Integer.parseInt(msgCode);
+						drawDAO.insertErrorLog(GameCode.KN.name(), Market.MT.name(), resultTime, tmpMsgCode);
 					}
+				} else {
+					drawDAO.insertErrorLog(GameCode.KN.name(), Market.MT.name(), resultTime, 2);
 				}
+			} else {
+				drawDAO.insertErrorLog(GameCode.KN.name(), Market.MT.name(), resultTime, 2);
 			}
+
 			System.out.println("----------Keno MT end----------");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,7 +115,6 @@ public class KenoGrabbingMT extends KenoGrabbingTask {
 
 			if (draw.getResult() == null || draw.getResult().length() == 0) {
 				updateData(socketHttpDestination, httpRequestInfo, logger);
-				drawDAO.insertLog(httpRequestInfo, 0);
 			}
 
 		}
