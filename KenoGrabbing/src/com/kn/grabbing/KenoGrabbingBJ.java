@@ -109,8 +109,8 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 				System.out.println("目前無ip可以使用orIP回應速度過慢");
 				drawDAO.insertErrorLog(GameCode.KN.name(), Market.BJ.name(), resultTime, 4);
 			}
-			System.getProperties().remove("http.proxyHost");
-			System.getProperties().remove("http.proxyPort");
+//			System.getProperties().remove("http.proxyHost");
+//			System.getProperties().remove("http.proxyPort");
 			error = 1;
 		} catch (Exception e) {
 			e.printStackTrace();
