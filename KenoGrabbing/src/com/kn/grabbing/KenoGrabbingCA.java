@@ -78,7 +78,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 							if (mappingNumber.equals(newNumber) && dList.getResult() == null) {
 
 								newAward = newlist.get("firstAward").get("drawNbrs").toString();
-								;
+								
 								httpRequestInfo = new HashMap<String, String>();
 								httpRequestInfo.put("drawId", "" + dList.getId());
 								httpRequestInfo.put("gameCode", GameCode.KN.name());
@@ -94,7 +94,6 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 				}
 			}else {
 				System.out.println("目前無ip可以使用orIP回應速度過慢");
-				drawDAO.insertErrorLog(GameCode.KN.name(), Market.CA.name(), resultTime, 4);
 			}
 			error = 1;
 		} catch (Exception e) {
@@ -142,8 +141,9 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 
 			for (Element checkIp : allIP) {
 				Elements filterIp = checkIp.select("td");
-				String tmpTime[] = filterIp.get(9).text().split(" ");
-				float time = Float.parseFloat(tmpTime[0]);
+
+				String tmpTime[] = filterIp.get(9).text().split("\\.");
+				int time = Integer.parseInt(tmpTime[0]);
 				if (!filterIp.get(7).text().isEmpty() && time < 3) {
 					UseIPInfo useIPInfo = new UseIPInfo();
 					useIPInfo.setIp(filterIp.get(0).text());
@@ -151,10 +151,14 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 					ipList.add(useIPInfo);
 				}
 			}
-
+			if(ipList.isEmpty()){
+				drawDAO.insertErrorLog(GameCode.KN.name(), Market.CA.name(), resultTime, 4);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			drawDAO.insertErrorLog(GameCode.KN.name(), Market.CA.name(), resultTime, 3);
+			
 		}
 		return ipList;
 	}
