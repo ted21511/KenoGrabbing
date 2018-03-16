@@ -22,7 +22,7 @@ import com.kn.util.KenoCAUtils;
 public class KenoGrabbingCA extends KenoGrabbingTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingCA.class);
-	private String ipUrl = "https://proxy.coderbusy.com/classical/country/ca.aspx";
+	private String ipUrl = "https://www.proxydocker.com/en/proxylist/country/Canada";
 	private String url;
 	int error = 1;
 
@@ -49,6 +49,8 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 				int port = Integer.parseInt(porxyIp.getPort());
 				Document xmlDoc = Jsoup.connect(url).proxy(porxyIp.getIp(),port).ignoreContentType(true).timeout(10000).get();
 				HashMap<String, JSONObject> newlist = KenoCAUtils.getNumber(xmlDoc);
+
+				
 				String newNumber = newlist.get("firstAward").get("drawNbr").toString();
 				String startNumber = newlist.get("lastAward").get("drawNbr").toString();
 				List<Draw> list = null;
@@ -136,20 +138,25 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 	public List<UseIPInfo> checkCAIP(String resultTime) {
 		List<UseIPInfo> ipList = new ArrayList<UseIPInfo>();
 		try {
-			Document doc = Jsoup.connect(ipUrl).ignoreContentType(true).timeout(5000).get();
-			Elements allIP = doc.select(".table > tbody > tr");
+			Document doc = Jsoup.connect(ipUrl).timeout(5000).get();
+			Elements allIP = doc.select(".proxylist_table > tbody > tr");
 
-			for (Element checkIp : allIP) {
-				Elements filterIp = checkIp.select("td");
-
-				String tmpTime[] = filterIp.get(9).text().split("\\.");
-				int time = Integer.parseInt(tmpTime[0]);
-				if (!filterIp.get(7).text().isEmpty() && time < 3) {
-					UseIPInfo useIPInfo = new UseIPInfo();
-					useIPInfo.setIp(filterIp.get(0).text());
-					useIPInfo.setPort(filterIp.get(1).text());
-					ipList.add(useIPInfo);
+			for (int i = 1;i<=allIP.size()-1;i++) {
+				String filterIp = allIP.get(i).select("td").get(0).text();
+				if(!filterIp.isEmpty()){
+					String tmpSpeed =  allIP.get(i).select("td").get(3).select(".proxy-ping-span").attr("style");
+					String[] filterSpeed = tmpSpeed.split(":|%");
+					int speed = Integer.parseInt(filterSpeed[filterSpeed.length-1]);
+					if(speed >= 70){
+						String[] Ip_Port = filterIp.split(":");
+						UseIPInfo useIPInfo = new UseIPInfo();
+						useIPInfo.setIp(Ip_Port[0]);
+						useIPInfo.setPort(Ip_Port[1]);
+						ipList.add(useIPInfo);
+					}
+				
 				}
+
 			}
 			if(ipList.isEmpty()){
 				drawDAO.insertErrorLog(GameCode.KN.name(), Market.CA.name(), resultTime, 4);
