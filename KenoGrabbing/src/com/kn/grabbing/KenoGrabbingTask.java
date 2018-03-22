@@ -1,9 +1,10 @@
 package com.kn.grabbing;
 
+import java.security.Security;
 import java.util.HashMap;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.framework.support.spring.SpringObjectFactory;
-import org.framework.web.ssl.DisableSslVerification;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -45,7 +46,8 @@ public class KenoGrabbingTask {
 	public void startGrabbing() {
 		
 		System.out.println("********** Start Keno Grabbing... **********");
-		DisableSslVerification.disable();			
+//		DisableSslVerification.disable();		
+		Security.addProvider(new BouncyCastleProvider());	
 		
 	}
 	
