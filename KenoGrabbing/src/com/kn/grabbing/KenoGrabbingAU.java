@@ -21,16 +21,10 @@ import org.json.JSONObject;
 
 public class KenoGrabbingAU extends KenoGrabbingTask {
 	
-	private int issuePeriod = 10;
 	private String url;// = "https://webapi-info-act.keno.com.au/v2/info/history?jurisdiction=ACT&starting_game_number=drawNumber&number_of_games=20&date=drawDate&page_size=20&page_number=1";
 	private int error = 1;
 
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingAU.class);
-	
-//	public static void main(String[] args) {
-//		KenoGrabbingAU task = new KenoGrabbingAU();
-//		task.startGrabbing();
-//	}
 	
 	public void startGrabbing() {
 		String resultTime = CommonUnits.getNowDateTime();
@@ -58,10 +52,6 @@ public class KenoGrabbingAU extends KenoGrabbingTask {
 				JSONObject obj = list.getJSONObject(i);
 				drawNumber = obj.getInt("game-number")+"";
 				drawResult = obj.get("draw").toString();
-//				drawDate = getDrawdate(drawNumber, resultList, drawDate);
-//				System.out.println(drawNumber + " - " + drawResult);
-				
-//				processDrawData(drawNumber, drawResult, drawDate);
 				processDrawData(drawNumber, drawResult, resultTime);
 			}
 			System.out.println("----------Keno AU end----------");
@@ -79,17 +69,6 @@ public class KenoGrabbingAU extends KenoGrabbingTask {
 			}
 		} 
 	}
-	
-//	private String getDrawdate(String drawNumber, List<Draw> resultList, String drawDate) {
-//		String dNumber;
-//		for (Draw draw : resultList) {
-//			dNumber = draw.getNumber();
-//			if (drawNumber.equals(dNumber)) {
-//				return new SimpleDateFormat("yyyy-MM-dd").format(draw.getDate());
-//			}
-//		}
-//		return drawDate;
-//	}
 
 	private void processDrawData(String drawNumber, String drawResult, String resultTime) {
 		List<Draw> checkResult = drawDAO.selectByDrawNumberAndMarketAU(Market.AU.getMarketName(), drawNumber, GameCode.KN.name());
@@ -111,10 +90,6 @@ public class KenoGrabbingAU extends KenoGrabbingTask {
 				}
 		}
 
-	}
-
-	public void setIssuePeriod(int issuePeriod) {
-		this.issuePeriod = issuePeriod;
 	}
 
 	public void setUrl(String url) {

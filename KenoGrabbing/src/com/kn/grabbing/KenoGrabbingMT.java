@@ -19,12 +19,6 @@ public class KenoGrabbingMT extends KenoGrabbingTask {
 	//private static final String FILENAME = "C:/Users/ted/Desktop/Keno-Grabbing-MT.txt";
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingMT.class);
 
-	// public static void main(String[] args) {
-	// // TODO Auto-generated method stub
-	// KenoGrabbingMT task = new KenoGrabbingMT();
-	// task.startGrabbing();
-	// }
-
 	public void startGrabbing() {
 		BufferedReader br = null;
 		FileReader fr = null;

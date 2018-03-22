@@ -19,7 +19,6 @@ import com.kn.util.GameCode;
 import com.kn.util.KenoBJUtils;
 import com.kn.util.Market;
 import com.kn.util.UseIPInfo;
-import com.sun.mail.iap.ParsingException;
 
 public class KenoGrabbingBJ extends KenoGrabbingTask {
 
