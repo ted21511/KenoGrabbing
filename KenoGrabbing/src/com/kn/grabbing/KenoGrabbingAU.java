@@ -67,7 +67,7 @@ public class KenoGrabbingAU extends KenoGrabbingTask {
 			System.out.println("----------Keno AU end----------");
 			error = 1;
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.toString());
 			if (error <= 3) {
 				System.out.println("Keno AU 錯誤次數:" + error);
 				error++;

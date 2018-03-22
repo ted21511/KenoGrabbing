@@ -27,7 +27,7 @@ public class KenoCAUtils {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.toString());
 		}
 
 		return newlist;

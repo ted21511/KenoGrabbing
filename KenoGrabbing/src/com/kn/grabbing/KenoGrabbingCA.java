@@ -99,7 +99,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 			}
 			error = 1;
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.toString());
 			if (error <= 3) {
 				System.out.println("CA錯誤次數:" + error);
 				error++;
@@ -163,7 +163,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.toString());
 			drawDAO.insertErrorLog(GameCode.KN.name(), Market.CA.name(), resultTime, 3);
 			
 		}

@@ -83,7 +83,7 @@ public class KenoGrabbingMT extends KenoGrabbingTask {
 
 			System.out.println("----------Keno MT end----------");
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.toString());
 			drawDAO.insertErrorLog(GameCode.KN.name(), Market.MT.name(), resultTime, 2);
 		} finally {
 			try {

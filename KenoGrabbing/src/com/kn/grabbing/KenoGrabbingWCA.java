@@ -1,7 +1,7 @@
 package com.kn.grabbing;
 
 import java.net.URL;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,12 +37,16 @@ public class KenoGrabbingWCA extends KenoGrabbingTask {
 		String resultTime = CommonUnits.getNowDateTime();
 		try {
 			System.out.println("----------Keno WCA start----------");
-			Draw draw = drawDAO.selectMAXDrawDate(Market.WCA.getMarketName(), GameCode.KN.name()).get(0);
-			Date drawDate = draw.getDate();
-			int day = drawDate.getDate();
-			int month = drawDate.getMonth() + 1;
-			int year = drawDate.getYear() + 1900;
-
+			
+			Calendar now = Calendar.getInstance();
+			int year = now.get(Calendar.YEAR);
+			int month = now.get(Calendar.MONTH) + 1;		
+			int hour = now.get(Calendar.HOUR_OF_DAY);
+			if(hour < 18){
+			now.add(Calendar.DAY_OF_MONTH, -1);
+			}
+			int day = now.get(Calendar.DAY_OF_MONTH);		    
+			
 			Document doc = Jsoup.parse(new URL(url + month + "/" + day + "/" + year), 10000);
 			Element table = KenoWCAUtils.getTargetTable(doc);
 			if (table != null) {
@@ -71,7 +75,7 @@ public class KenoGrabbingWCA extends KenoGrabbingTask {
 			System.out.println("----------Keno WCA end----------");
 			error = 1;
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.toString());
 			if (error <= 3) {
 				System.out.println("Keno WCA 錯誤次數:" + error);
 				error++;

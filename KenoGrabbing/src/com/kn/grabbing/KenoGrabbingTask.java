@@ -38,7 +38,7 @@ public class KenoGrabbingTask {
 			System.out.println("server initialized successfully");
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.toString());
 		}
 	}
 
@@ -72,7 +72,7 @@ public class KenoGrabbingTask {
 			}						
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.toString());
 			logger.error("Error in posting data. Error message: " + e.getMessage());
 			drawDAO.insertLog(httpRequestInfo, 2);
 			

@@ -112,7 +112,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 //			System.getProperties().remove("http.proxyPort");
 			error = 1;
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.toString());
 			if (error <= 3) {
 				System.out.println("BJ錯誤次數:" + error);
 				error++;
@@ -188,7 +188,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.toString());
 		}
 		return ipList;
 	}
@@ -220,7 +220,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 				drawDAO.insertErrorLog(GameCode.KN.name(), Market.BJ.name(), resultTime, 4);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.toString());
 			drawDAO.insertErrorLog(GameCode.KN.name(), Market.BJ.name(), resultTime, 3);
 		}
 		return ipList;

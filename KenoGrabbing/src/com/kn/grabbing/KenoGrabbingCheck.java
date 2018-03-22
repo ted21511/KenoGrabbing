@@ -38,7 +38,7 @@ public class KenoGrabbingCheck extends KenoGrabbingTask {
             output.write(resultStr);
             output.close();
         } catch (IOException e) {
-            e.printStackTrace();
+        	System.out.println(e.toString());
         }
 	
 		System.out.println("********** End Keno Grabbing Checking **********");
