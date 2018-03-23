@@ -2,8 +2,11 @@ package com.kn.grabbing;
 
 import java.util.HashMap;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
+
 import org.framework.support.spring.SpringObjectFactory;
-import org.framework.web.ssl.DisableSslVerification;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,6 +16,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.kn.dao.DrawDAO;
 import com.kn.util.EmailNotificated;
 import com.kn.util.SmtpInfo;
+import com.ssl.TLSSocketConnectionFactory;
 
 public class KenoGrabbingTask {
 
@@ -20,14 +24,14 @@ public class KenoGrabbingTask {
 	public static String socketHttpDestination;
 	public static DrawDAO drawDAO;
 	public static String proxyHost = "proxy.hinet.net";
-	
+
 	public static void main(String[] args) {
 		KenoGrabbingTask task = new KenoGrabbingTask();
 		task.loadConfiguration();
 	}
-	
+
 	public void loadConfiguration() {
-		try { 
+		try {
 			System.out.println("server initializing... xml loading...");
 			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
 			context.setConfigLocation("classpath:spring/applicationContext*.xml");
@@ -43,20 +47,21 @@ public class KenoGrabbingTask {
 	}
 
 	public void startGrabbing() {
-		
+
 		System.out.println("********** Start Keno Grabbing... **********");
-		DisableSslVerification.disable();			
-		
+		HttpsURLConnection.setDefaultHostnameVerifier(hv);
+		HttpsURLConnection.setDefaultSSLSocketFactory(new TLSSocketConnectionFactory());
 	}
-	
+
 	protected void updateData(String socketHttpDestination, HashMap<String, String> httpRequestInfo, Logger logger) {
-		
-		Connection con = Jsoup.connect(socketHttpDestination).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36");
-		
+
+		Connection con = Jsoup.connect(socketHttpDestination).userAgent(
+				"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36");
+
 		Document response = null;
-		
+
 		try {
-			
+
 			con.data(httpRequestInfo);
 			con.timeout(10000);
 			response = con.post();
@@ -65,30 +70,30 @@ public class KenoGrabbingTask {
 
 			String line = "";
 			if ((line = rd) != null) {
-				System.out.println("********** Market="+ httpRequestInfo.get("market") + ", Game_Code=" + httpRequestInfo.get("gameCode") + ", Draw_Number=" + httpRequestInfo.get("drawNumber") + ", Result=" + httpRequestInfo.get("result") + ", Response Code: " + line + "**********");
+				System.out.println("********** Market=" + httpRequestInfo.get("market") + ", Game_Code="
+						+ httpRequestInfo.get("gameCode") + ", Draw_Number=" + httpRequestInfo.get("drawNumber")
+						+ ", Result=" + httpRequestInfo.get("result") + ", Response Code: " + line + "**********");
 				logger.info("Return code after update [draw]: {}", line);
 			} else {
 				logger.info("Waited for response, time out, so forced consuming response");
-			}						
+			}
 
 		} catch (Exception e) {
 			System.out.println(e.toString());
 			logger.error("Error in posting data. Error message: " + e.getMessage());
 			drawDAO.insertLog(httpRequestInfo, 2);
-			
+
 		}
-		
+
 	}
-	
+
 	public void changeIP() {
-	   System.getProperties().setProperty("proxySet", "true");
-	   System.getProperties().setProperty("http.proxyHost", proxyHost);
-	   System.getProperties().setProperty("http.proxyPort", "80");
-	   startGrabbing();
-	 }
+		System.getProperties().setProperty("proxySet", "true");
+		System.getProperties().setProperty("http.proxyHost", proxyHost);
+		System.getProperties().setProperty("http.proxyPort", "80");
+		startGrabbing();
+	}
 
-
-	
 	public void sendNotifyMail(String subject, String content) {
 		new EmailNotificated().emailNotify(smtpEmailProperties, subject, content);
 	}
@@ -108,4 +113,34 @@ public class KenoGrabbingTask {
 		this.drawDAO = drawDAO;
 	}
 
+	static HostnameVerifier hv = new HostnameVerifier() {
+		public boolean verify(String urlHostName, SSLSession session) {
+			System.out.println("Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
+			return true;
+		}
+	};
+
+	static class miTM implements javax.net.ssl.TrustManager, javax.net.ssl.X509TrustManager {
+		public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+			return null;
+		}
+
+		public boolean isServerTrusted(java.security.cert.X509Certificate[] certs) {
+			return true;
+		}
+
+		public boolean isClientTrusted(java.security.cert.X509Certificate[] certs) {
+			return true;
+		}
+
+		public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType)
+				throws java.security.cert.CertificateException {
+			return;
+		}
+
+		public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType)
+				throws java.security.cert.CertificateException {
+			return;
+		}
+	}
 }
