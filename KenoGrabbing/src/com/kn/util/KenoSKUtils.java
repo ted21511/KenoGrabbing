@@ -17,20 +17,41 @@ import com.ct.lk.domain.Draw;
 import com.sun.org.apache.regexp.internal.recompile;
 
 public class KenoSKUtils {
-	
+
 	private static int saveTime = 0;
-	
+
 	public static int getSaveTime() {
-		Calendar tmpDate = Calendar.getInstance();	
-		int month = tmpDate.get(Calendar.MONTH) + 1 ;	
-		if(month<4 || month>10){
+		Calendar tmpDate = Calendar.getInstance();
+		tmpDate.add(Calendar.HOUR_OF_DAY, -6);
+		int month = tmpDate.get(Calendar.MONTH) + 1;
+		int day = tmpDate.get(Calendar.DAY_OF_MONTH);
+
+		System.out.println(tmpDate.getTime());
+		if (month < 4 || month > 9) {
 			saveTime = 1;
-		}else{
+			if (month == 3 || month == 10) {
+
+				Calendar checkDate = Calendar.getInstance();
+				checkDate.add(Calendar.MONTH, 1);
+				checkDate.set(Calendar.DAY_OF_MONTH, 1);
+				checkDate.add(Calendar.DAY_OF_MONTH, -1);
+				checkDate.add(Calendar.DAY_OF_MONTH, 1 - checkDate.get(Calendar.DAY_OF_WEEK));
+				int checkDay = checkDate.get(Calendar.DAY_OF_MONTH);
+							
+                if(month == 3 && day >= checkDay){
+                	saveTime = 0;
+                }else if (month == 10 && day < checkDay){
+                	saveTime = 0;
+                }             
+			}
+
+		} else {
 			saveTime = 0;
-		}	
+		}
+		System.out.println(saveTime);
 		return saveTime;
 	}
-	
+
 	public static Element getNumber(Document xmlDoc) {
 		Element newlist = null;
 		try {
@@ -49,9 +70,9 @@ public class KenoSKUtils {
 		String a[] = newNumber.split(":");
 		int hour = Integer.parseInt(a[0]);
 		int mi = Integer.parseInt(a[1]);
-		
+
 		Calendar nowdate = Calendar.getInstance();
-		if (hour + 6 + saveTime>= 24){
+		if (hour + 6 + saveTime >= 24) {
 			nowdate.add(Calendar.DAY_OF_MONTH, -1);
 		}
 		nowdate.set(Calendar.HOUR_OF_DAY, hour + 6 + saveTime);
@@ -65,12 +86,12 @@ public class KenoSKUtils {
 	}
 
 	public static String formatStartDate(String newNumber) {
-		
+
 		String a[] = newNumber.split(":");
 		int hour = Integer.parseInt(a[0]);
-		
+
 		Calendar startdate = Calendar.getInstance();
-		if (hour >= 18 - saveTime){
+		if (hour >= 18 - saveTime) {
 			startdate.add(Calendar.DAY_OF_MONTH, -1);
 		}
 		startdate.set(Calendar.HOUR_OF_DAY, 11 + saveTime);
