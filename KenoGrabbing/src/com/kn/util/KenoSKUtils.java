@@ -26,7 +26,6 @@ public class KenoSKUtils {
 		int month = tmpDate.get(Calendar.MONTH) + 1;
 		int day = tmpDate.get(Calendar.DAY_OF_MONTH);
 
-		System.out.println(tmpDate.getTime());
 		if (month < 4 || month > 9) {
 			saveTime = 1;
 			if (month == 3 || month == 10) {
@@ -44,11 +43,9 @@ public class KenoSKUtils {
                 	saveTime = 0;
                 }             
 			}
-
 		} else {
 			saveTime = 0;
 		}
-		System.out.println(saveTime);
 		return saveTime;
 	}
 
