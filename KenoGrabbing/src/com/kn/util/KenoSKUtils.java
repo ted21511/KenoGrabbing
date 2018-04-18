@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.io.output.ThresholdingOutputStream;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,7 +13,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.ct.lk.domain.Draw;
-import com.sun.org.apache.regexp.internal.recompile;
 
 public class KenoSKUtils {
 

@@ -1,7 +1,5 @@
 package com.kn.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 import org.json.JSONArray;
