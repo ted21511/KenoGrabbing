@@ -137,7 +137,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 	public List<UseIPInfo> checkCAIP(String resultTime) {
 		List<UseIPInfo> ipList = new ArrayList<UseIPInfo>();
 		try {
-			Document doc = Jsoup.connect(ipUrl).timeout(5000).get();
+			Document doc = Jsoup.connect(ipUrl).timeout(5000).post();
 			Elements allIP = doc.select(".proxylist_table > tbody > tr");
 
 			for (int i = 1;i<=allIP.size()-1;i++) {
