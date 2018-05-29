@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,8 +23,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingBJ.class);
 	private String url; // = "http://www.bwlc.gov.cn/bulletin/prevkeno.html";
 	private int page = 1;
-	private String ipUrl = "http://www.xdaili.cn/ipagent//freeip/getFreeIps?page=1&rows=10";
-	private String checkipUrl = "http://www.xdaili.cn/ipagent//checkIp/ipList?";
+	private String ipUrl = "https://www.proxydocker.com/en/proxylist/search?port=All&type=HTTP&anonymity=All&country=China&city=All&state=All&need=All";
 	private String subCheckipUrl = "http://cn-proxy.com/";
 	private static boolean flag = true;
 	int error = 1;
@@ -107,8 +104,6 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 			} else {
 				System.out.println("目前無ip可以使用orIP回應速度過慢");
 			}
-//			System.getProperties().remove("http.proxyHost");
-//			System.getProperties().remove("http.proxyPort");
 			error = 1;
 		} catch (Exception e) {
 			System.out.println(e.toString());
@@ -139,53 +134,38 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 
 		porxyIp.setIp(ip);
 		porxyIp.setPort(port);
-//		System.getProperties().setProperty("proxySet", "true");
-//		System.getProperties().setProperty("http.proxyHost", ip);
-//		System.getProperties().setProperty("http.proxyPort", port);
+		
 		return porxyIp;
 	}
 
 	public List<UseIPInfo> checkCNIP(String resultTime) {
 
 		List<UseIPInfo> ipList = new ArrayList<UseIPInfo>();
-		String checkIPUrl = checkipUrl;
+		
 
 		try {
+			
 			Document doc = Jsoup.connect(ipUrl).ignoreContentType(true).timeout(5000).get();
-			String json = doc.select("body").text();
-			String checkIPJson = KenoBJUtils.splitJson(json);
+			Elements allIP = doc.select(".proxylist_table > tbody > tr");
 
-			JSONArray jsonArray = new JSONArray(checkIPJson);
-
-			for (int i = 0; i <= jsonArray.length() - 1; i++) {
-				JSONObject tmpJson = jsonArray.getJSONObject(i);
-				String ip = tmpJson.get("ip").toString();
-				String port = tmpJson.get("port").toString();
-				checkIPUrl = checkIPUrl + "ip_ports%5B%5D=" + ip + "%3A" + port + "&";
-			}
-
-			Document ckipDoc = Jsoup.connect(checkIPUrl).ignoreContentType(true).get();
-			String ckipJson = ckipDoc.select("body").text();
-			String ipJson = KenoBJUtils.splitJson(ckipJson);
-
-			JSONArray jsonIPArray = new JSONArray(ipJson);
-
-			for (int j = 0; j <= jsonIPArray.length() - 1; j++) {
-				JSONObject tmpIPJson = jsonIPArray.getJSONObject(j);
-				String tmpTime = tmpIPJson.optString("time");
-
-				if (!tmpTime.isEmpty()) {
-					int time = KenoBJUtils.formatInt(tmpTime);
-
-					if (time <= 3000) {
+			for (int i = 1;i<=allIP.size()-1;i++) {
+				String filterIp = allIP.get(i).select("td").get(0).text();
+				if(!filterIp.isEmpty()){
+					String tmpSpeed =  allIP.get(i).select("td").get(3).select(".proxy-ping-span").attr("style");
+					String[] filterSpeed = tmpSpeed.split(":|%");
+					int speed = Integer.parseInt(filterSpeed[filterSpeed.length-1]);
+					if(speed >= 70){
+						String[] Ip_Port = filterIp.split(":");
 						UseIPInfo useIPInfo = new UseIPInfo();
-						useIPInfo.setIp(tmpIPJson.get("ip").toString());
-						useIPInfo.setPort(tmpIPJson.get("port").toString());
-						useIPInfo.setTime(time);
-						ipList.add(useIPInfo);						
+						useIPInfo.setIp(Ip_Port[0]);
+						useIPInfo.setPort(Ip_Port[1]);
+						ipList.add(useIPInfo);
 					}
+				
 				}
+
 			}
+			
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -200,19 +180,17 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 			Elements allIP = doc.select(".sortable").select("tbody").select("tr");
 			for (Element checkIP :  allIP) {
 				String checkPort = checkIP.select("td").get(1).text();
-				if (checkPort.equals("80")) {
 					String[] speed = checkIP.select(".bar").attr("style").split("\\s|;|%");
 					int resSpeed = Integer.parseInt(speed[1]);					
 					if (resSpeed >= 75) {										
 						UseIPInfo useIPInfo = new UseIPInfo();
 						useIPInfo.setIp(checkIP.select("tr").select("td").get(0).text());
-						useIPInfo.setPort("80");
+						useIPInfo.setPort(checkPort);
 						ipList.add(useIPInfo);
 						if(ipList.size() > 4){
 							return ipList;
 						}
 					}
-				}
 			}
 
 			if(ipList.isEmpty()){

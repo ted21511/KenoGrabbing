@@ -14,11 +14,11 @@ import org.slf4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.kn.dao.DrawDAO;
+import com.kn.ssl.TLSSocketConnectionFactory;
 import com.kn.util.EmailNotificated;
 import com.kn.util.SmtpInfo;
-import com.ssl.TLSSocketConnectionFactory;
 
-public class KenoGrabbingTask {
+public class KenoGrabbingTask extends Thread{
 
 	public static SmtpInfo smtpEmailProperties;
 	public static String socketHttpDestination;

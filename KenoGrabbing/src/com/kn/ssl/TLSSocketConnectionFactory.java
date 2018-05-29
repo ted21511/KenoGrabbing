@@ -1,4 +1,4 @@
-package com.ssl;
+package com.kn.ssl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
