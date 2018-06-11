@@ -21,7 +21,7 @@ import com.kn.util.KenoCAUtils;
 public class KenoGrabbingCA extends KenoGrabbingTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingCA.class);
-	private String ipUrl = "https://www.proxydocker.com/en/proxylist/country/Canada";
+	private String ipUrl = "https://www.proxydocker.com/en/proxylist/search?port=All&type=HTTP&anonymity=All&country=Canada&city=All&state=All&need=All";
 	private String url;
 	int error = 1;
 
