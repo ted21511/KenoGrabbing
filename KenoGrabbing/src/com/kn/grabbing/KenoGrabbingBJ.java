@@ -23,7 +23,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingBJ.class);
 	private String url; // = "http://www.bwlc.gov.cn/bulletin/prevkeno.html";
 	private int page = 1;
-	private String ipUrl = "https://www.proxydocker.com/en/proxylist/search?port=All&type=HTTP&anonymity=All&country=China&city=All&state=All&need=All";
+	private String ipUrl = "https://www.proxydocker.com/en/proxylist/search?port=80&type=HTTP&anonymity=All&country=China&city=All&state=All&need=All";
 	private String subCheckipUrl = "http://cn-proxy.com/";
 	private static boolean flag = true;
 	int error = 1;
