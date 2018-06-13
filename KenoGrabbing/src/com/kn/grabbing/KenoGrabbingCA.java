@@ -3,6 +3,7 @@ package com.kn.grabbing;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -21,7 +22,7 @@ import com.kn.util.KenoCAUtils;
 public class KenoGrabbingCA extends KenoGrabbingTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingCA.class);
-	private String ipUrl = "https://www.proxydocker.com/en/proxylist/search?port=80&type=HTTP&anonymity=All&country=Canada&city=All&state=All&need=All";
+	private String ipUrl = "https://www.proxydocker.com/en/proxylist/search?port=All&type=HTTP&anonymity=All&country=Canada&city=All&state=All&need=All";
 	private String url;
 	int error = 1;
 
@@ -44,7 +45,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 		try {
 			if (!useIPList.isEmpty()) {
 				UseIPInfo porxyIp = new UseIPInfo();
-				porxyIp = changeIP(useIPList, error);
+				porxyIp = changeIP(useIPList);
 				int port = Integer.parseInt(porxyIp.getPort());
 				Document xmlDoc = Jsoup.connect(url).proxy(porxyIp.getIp(),port).ignoreContentType(true).timeout(10000).get();
 				HashMap<String, JSONObject> newlist = KenoCAUtils.getNumber(xmlDoc);
@@ -112,15 +113,13 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 
 	}
 
-	public UseIPInfo changeIP(List<UseIPInfo> useIPList, int error) {
-
-		int errorCount = error - 1;
-
-		if (errorCount > useIPList.size() - 1) {
-			errorCount = useIPList.size() - 1;
-		}
-		String ip = useIPList.get(errorCount).getIp();
-		String port = useIPList.get(errorCount).getPort();
+	public UseIPInfo changeIP(List<UseIPInfo> useIPList) {
+	
+		Random random = new Random();
+		int ran = random.nextInt(useIPList.size());
+		
+		String ip = useIPList.get(ran).getIp();
+		String port = useIPList.get(ran).getPort();
 		UseIPInfo porxyIp = new UseIPInfo();
 
 		System.out.println("ip:" + ip + "|port:" + port);

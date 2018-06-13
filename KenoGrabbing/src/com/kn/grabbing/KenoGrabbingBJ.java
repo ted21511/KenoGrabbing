@@ -3,6 +3,7 @@ package com.kn.grabbing;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,7 +24,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingBJ.class);
 	private String url; // = "http://www.bwlc.gov.cn/bulletin/prevkeno.html";
 	private int page = 1;
-	private String ipUrl = "https://www.proxydocker.com/en/proxylist/search?port=80&type=HTTP&anonymity=All&country=China&city=All&state=All&need=All";
+	private String ipUrl = "https://www.proxydocker.com/en/proxylist/search?port=All&type=HTTP&anonymity=All&country=China&city=All&state=All&need=All";
 	private String subCheckipUrl = "http://cn-proxy.com/";
 	private static boolean flag = true;
 	int error = 1;
@@ -51,7 +52,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 		try {			
 			if (!useIPList.isEmpty()) {
 				UseIPInfo porxyIp = new UseIPInfo();
-				porxyIp = changeIP(useIPList, error);
+				porxyIp = changeIP(useIPList);
 				int port = Integer.parseInt(porxyIp.getPort());
 				String pageUrl = url + page;
 				Document xmlDoc = Jsoup.connect(pageUrl).proxy(porxyIp.getIp(),port).timeout(5000).post();
@@ -119,15 +120,13 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 		}
 	}
 
-	public UseIPInfo changeIP(List<UseIPInfo> useIPList, int error) {
+	public UseIPInfo changeIP(List<UseIPInfo> useIPList) {
 
-		int errorCount = error - 1;
-
-		if (errorCount > useIPList.size() - 1) {
-			errorCount = useIPList.size() - 1;
-		}
-		String ip = useIPList.get(errorCount).getIp();
-		String port = useIPList.get(errorCount).getPort();
+		Random random = new Random();
+		int ran = random.nextInt(useIPList.size());
+		
+		String ip = useIPList.get(ran).getIp();
+		String port = useIPList.get(ran).getPort();
 		UseIPInfo porxyIp = new UseIPInfo();
 		
 		System.out.println("ip:" + ip + "|port:" + port);
