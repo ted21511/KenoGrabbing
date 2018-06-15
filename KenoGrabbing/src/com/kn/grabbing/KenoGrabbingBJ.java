@@ -49,10 +49,15 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 	}
 
 	public void startMain(List<UseIPInfo> useIPList,String resultTime) {
+		UseIPInfo porxyIp = new UseIPInfo();
+		int ran = 0;
 		try {			
 			if (!useIPList.isEmpty()) {
-				UseIPInfo porxyIp = new UseIPInfo();
-				porxyIp = changeIP(useIPList);
+				
+				Random random = new Random();
+				ran = random.nextInt(useIPList.size());
+				
+				porxyIp = changeIP(useIPList,ran);
 				int port = Integer.parseInt(porxyIp.getPort());
 				String pageUrl = url + page;
 				Document xmlDoc = Jsoup.connect(pageUrl).proxy(porxyIp.getIp(),port).timeout(5000).post();
@@ -111,6 +116,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 			if (error <= 3) {
 				System.out.println("BJ錯誤次數:" + error);
 				error++;
+				useIPList.remove(ran);						
 				startMain(useIPList,resultTime);
 			} else {
 				logger.error("Error in drawing " + Market.BJ.name() + " data. Error message: " + e.getMessage());
@@ -120,10 +126,7 @@ public class KenoGrabbingBJ extends KenoGrabbingTask {
 		}
 	}
 
-	public UseIPInfo changeIP(List<UseIPInfo> useIPList) {
-
-		Random random = new Random();
-		int ran = random.nextInt(useIPList.size());
+	public UseIPInfo changeIP(List<UseIPInfo> useIPList,int ran) {
 		
 		String ip = useIPList.get(ran).getIp();
 		String port = useIPList.get(ran).getPort();

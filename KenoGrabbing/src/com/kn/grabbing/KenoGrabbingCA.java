@@ -41,11 +41,14 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 	}
 
 	public void startMain(List<UseIPInfo> useIPList, String resultTime) {
-
+		UseIPInfo porxyIp = new UseIPInfo();
+		int ran = 0;
 		try {
 			if (!useIPList.isEmpty()) {
-				UseIPInfo porxyIp = new UseIPInfo();
-				porxyIp = changeIP(useIPList);
+				Random random = new Random();
+				ran = random.nextInt(useIPList.size());
+				
+				porxyIp = changeIP(useIPList,ran);
 				int port = Integer.parseInt(porxyIp.getPort());
 				Document xmlDoc = Jsoup.connect(url).proxy(porxyIp.getIp(),port).ignoreContentType(true).timeout(10000).get();
 				HashMap<String, JSONObject> newlist = KenoCAUtils.getNumber(xmlDoc);
@@ -103,6 +106,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 			if (error <= 3) {
 				System.out.println("CA錯誤次數:" + error);
 				error++;
+				useIPList.remove(ran);
 				startMain(useIPList,resultTime);
 			} else {
 				logger.error("Error in drawing " + Market.CA.name() + " data. Error message: " + e.getMessage());
@@ -113,10 +117,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 
 	}
 
-	public UseIPInfo changeIP(List<UseIPInfo> useIPList) {
-	
-		Random random = new Random();
-		int ran = random.nextInt(useIPList.size());
+	public UseIPInfo changeIP(List<UseIPInfo> useIPList,int ran) {
 		
 		String ip = useIPList.get(ran).getIp();
 		String port = useIPList.get(ran).getPort();
@@ -126,10 +127,7 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 
 		porxyIp.setIp(ip);
 		porxyIp.setPort(port);
-		// System.getProperties().setProperty("proxySet", "true");
-		// System.getProperties().setProperty("http.proxyHost", ip);
-		// System.getProperties().setProperty("http.proxyPort", port);
-
+	
 		return porxyIp;
 	}
 
@@ -167,7 +165,8 @@ public class KenoGrabbingCA extends KenoGrabbingTask {
 		}
 		return ipList;
 	}
-
+	
+	
 	public HashMap<String, String> supplyNumber(Document xmlDoc, String lastNumber) throws Exception {
 
 		HashMap<String, String> awardMap = new HashMap<String, String>();
